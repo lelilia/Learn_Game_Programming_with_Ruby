@@ -4,7 +4,7 @@ class Credit
 
 	def initialize(window, text, x, y)
 		@x = x
-		@y = y
+		@y = @initial_y = y
 		@text = text
 		@font = Gosu::Font.new(24)
 	end
@@ -14,7 +14,8 @@ class Credit
 	end
 
 	def draw
-		@font.draw(@text, @x, @y, 1)
+		@font.draw_text(@text, @x, @y, 1, 1, 1, Gosu::Color::WHITE)
+		#@font.draw(@text, @x, @y, 1)
 	end
 
 	def reset

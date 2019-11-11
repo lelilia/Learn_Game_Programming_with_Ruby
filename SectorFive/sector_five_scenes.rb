@@ -84,17 +84,17 @@ class SectorFive < Gosu::Window
 	end
 
 	def draw_end
-		clip_to(50, 140, 700, 360) do
-			@credits.each do |credit|
-				credit.draw
-			end
-		end
-		draw_line(0, 140, Gosu::Color::RED, WIDTH, 140, Gosu::Color::RED)
-		@message_font.draw(@message,  40, 40, 1, 1, 1, Gosu::Color::FUCHSIA)
-		@message_font.draw(@message2, 40, 75, 1, 1, 1, Gosu::Color::FUCHSIA)
-		draw_line(0, 500, Gosu::Color::RED, WIDTH, 500, Gosu::Color::RED)
-		@message_font.draw(@bottom_message, 180, 540, 1, 1, 1, Gosu::Color::AQUA)
-	end
+    	clip_to(50,140,700,360) do
+      		@credits.each do |credit|
+        		credit.draw
+      		end
+    	end 
+    	draw_line(0,140,Gosu::Color::RED,WIDTH,140,Gosu::Color::RED)
+    	@message_font.draw(@message,40,40,1,1,1,Gosu::Color::FUCHSIA)
+    	@message_font.draw(@message2,40,75,1,1,1,Gosu::Color::FUCHSIA)
+    	draw_line(0,500,Gosu::Color::RED,WIDTH,500,Gosu::Color::RED)
+    	@message_font.draw(@bottom_message,180,540,1,1,1,Gosu::Color::AQUA)
+  	end
 
 	def update
 		case @scene
@@ -142,7 +142,7 @@ class SectorFive < Gosu::Window
 		@bullets.dup.each do |bullet|
 			@bullets.delete bullet unless bullet.onscreen?
 		end
-		initialize_end(:count_reached) if @enemies_destroyed > MAX_ENEMIES
+		initialize_end(:count_reached) if @enemies_appeared > MAX_ENEMIES
 		@enemies.each do |enemy|
 			distance = Gosu.distance(enemy.x, enemy.y, @player.x, @player.y)
 			initialize_end(:hit_by_enemy) if distance < @player.radius + enemy.radius
