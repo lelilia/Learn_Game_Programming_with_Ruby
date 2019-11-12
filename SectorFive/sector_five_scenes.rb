@@ -46,7 +46,7 @@ class SectorFive < Gosu::Window
 		@bottom_message = "Press P to play again, or Q to quit."
 		@message_font = Gosu::Font.new(28)
 		@credits = []
-		y = 700
+		y = 500
 		File.open('credit.txt').each do |line|
 			@credits.push(Credit.new(self, line.chomp, 100, y))
 			y += 30
@@ -154,7 +154,7 @@ class SectorFive < Gosu::Window
 		@credits.each do |credit|
 			credit.move
 		end
-		if @credits.last.y < 250
+		if @credits.last.y < 100
 			@credits.each do |credit|
 				credit.reset
 			end
