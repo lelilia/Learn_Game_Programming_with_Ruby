@@ -35,4 +35,13 @@ class Square
 		end
 	end
 
+	def clear 
+		@number = 0
+	end
+
+	def set (color, number)
+		@color = color
+		@number = number 
+	end
+
 end
