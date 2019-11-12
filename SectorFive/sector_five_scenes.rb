@@ -31,6 +31,8 @@ class SectorFive < Gosu::Window
 		@enemies_destroyed = 0
 		@game_music = Gosu::Song.new('sounds/Cephalopod.ogg')
 		@game_music.play(true)
+		@explosion_sound = Gosu::Sample.new('sounds/explosion.ogg')
+		@shooting_sound = Gosu::Sample.new('sounds/shoot.ogg')
 	end
 
 	def initialize_end(fate)
@@ -134,6 +136,7 @@ class SectorFive < Gosu::Window
 					@bullets.delete bullet 
 					@explosions.push Explosion.new(self, enemy.x, enemy.y)
 					@enemies_destroyed += 1
+					@explosion_sound.play
 				end
 			end
 		end
@@ -185,6 +188,7 @@ class SectorFive < Gosu::Window
 	def button_down_game(id)
 		if id == Gosu::KbSpace
 			@bullets.push Bullet.new(self, @player.x, @player.y, @player.angle)
+			@shooting_sound.play(0.3)
 		end 
 	end
 
