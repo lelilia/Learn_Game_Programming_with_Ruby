@@ -42,4 +42,12 @@ class Square
 			@@font.draw("#{@val}", x_text, y_text, 2)
 		end
 	end
+
+	def clear
+		@val = 0
+	end
+
+	def set (val)
+		@val = val
+	end
 end
