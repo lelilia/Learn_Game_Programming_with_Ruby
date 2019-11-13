@@ -12,6 +12,23 @@ class Game2048 < Gosu::Window
 	def draw
 		@game.draw
 	end
+
+	def button_down(id)
+		if id == Gosu::KbR
+			@game = Game.new(self)
+		elsif id == Gosu::KbUp
+			#move up
+		elsif id == Gosu::KbDown
+			#move down
+		elsif id == Gosu::KbLeft
+			#move left
+		elsif id == Gosu::KbRight
+			#move right
+		end
+				
+				
+			
+	end
 end
 
 window = Game2048.new
