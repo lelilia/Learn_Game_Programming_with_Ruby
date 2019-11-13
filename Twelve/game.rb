@@ -24,6 +24,14 @@ class Game
 		@squares.each do |square|
 			square.draw
 		end
+		return unless @start_square
+		@start_square.highlight(:start)
+		return unless @current_square && @current_square != @start_square
+		if move_is_legal?(@start_square, @current_square)
+			@current_square.highlight(:legal)
+		else
+			@current_square.highlight(:illegal)
+		end
 	end
 
 	def handle_mouse_down(x,y)
@@ -40,6 +48,12 @@ class Game
 			move(@start_square, @end_square)
 		end
 		@start_square = nil
+	end
+
+	def handle_mouse_move(x,y)
+		row = (y.to_i - 20) / 100
+		column = (x.to_i - 20) / 100
+		@current_square = get_square(column, row)
 	end
 
 	def get_square(column, row)
@@ -96,4 +110,21 @@ class Game
 		square2.set(color, number)
 	end 
 	
+	def move_is_legal?(square1, square2)
+		return false if square1.number == 0
+		if square1.row == square2.row
+			squares= squares_between_in_row(square1, square2)
+		elsif square1.column == square2.column 
+			squares = squares_between_in_column(square1, square2)
+		else
+			return false
+		end
+		squares.reject!{|square| square.number == 0}
+		return false if squares.count != 2
+		return false if squares[0].color != squares[1].color 
+		return true
+	end
+
+
+
 end
