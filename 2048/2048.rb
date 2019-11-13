@@ -18,6 +18,7 @@ class Game2048 < Gosu::Window
 			@game = Game.new(self)
 		elsif id == Gosu::KbUp
 			#move up
+			@game.move_up
 		elsif id == Gosu::KbDown
 			#move down
 		elsif id == Gosu::KbLeft

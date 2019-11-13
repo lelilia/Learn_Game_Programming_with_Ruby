@@ -1,7 +1,7 @@
 require 'gosu'
 
 class Square
-
+	FONT_SIZE = 45
 	attr_reader :row, :col, :val
 
 	def initialize(window, col, row, val)
@@ -17,7 +17,7 @@ class Square
 				   c1024: Gosu::Color.argb(0xaae62263),
 				   c2048: Gosu::Color.argb(0xaaeb0753)}
 		@@window ||= window
-		@@font ||= Gosu::Font.new(72)
+		@@font ||= Gosu::Font.new(FONT_SIZE)
 		@row = row
 		@col = col 
 		@val = val
@@ -38,7 +38,8 @@ class Square
 			@@window.draw_quad(x1, y1, c, x2, y2, c, x3, y3, c, x4, y4, c, 1)
 			x_center = x1 + 48
 			x_text = x_center - @@font.text_width("#{@val}") / 2
-			y_text = y1 + 12
+			#y_text = y1 + 12
+			y_text = y1 + (96 - FONT_SIZE)/2
 			@@font.draw("#{@val}", x_text, y_text, 2)
 		end
 	end

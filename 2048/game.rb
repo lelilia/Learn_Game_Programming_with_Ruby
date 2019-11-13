@@ -37,13 +37,36 @@ class Game
 	end
 
 	def move_up
-		@squares.each do |square|
-			if square.val !=0
-				#check if there is space above
-				#move it there
-			end 
+		#fill_random_empty_square
+		@squares.each do |square1|
+			if square1.val != 0
+				square1.set(square1.val*2)
+			end
 		end
 	end
+
+		#begin @squares.each do |square1|
+		#	if square1.val !=0
+		#		on_top = []
+		#		(0..square1.row-1).each do |row|
+		#			#add to on_top
+		#			on_top.push get_square(square1.col, row)
+		#		end
+		#		#check if there is space above
+		#		#move it there
+		#		while on_top != []
+		#			square2 = on_top.pop
+		#			if square2.val != 0
+		#				break
+		#			elsif square2.val == 0
+		#				square2.set(square1.val)
+		#				square1.set(0)
+		#			end
+		#				
+		#		end
+		#	end 
+		#end =end
+	#end
 
 end
 
