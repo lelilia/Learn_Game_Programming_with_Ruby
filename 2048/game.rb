@@ -36,7 +36,83 @@ class Game
 		return @squares[row*4+col]
 	end
 
-	def move(dir)
+	def move(direction)
+		did_something_happen = false
+		case direction
+		when :up, :down
+			(0..3).each do |col|
+				arr = []
+				(0..3).each do |row|
+					arr.push get_square(col, row).val
+				end
+				old_arr = arr.clone
+				arr = handle_stack(arr)
+				if arr != old_arr
+					did_something_happen = true
+				end
+				(0..3).each do |row|
+					square = get_square(col, row)
+					if direction == :up
+						square.set(arr.shift)
+					else
+						square.set(arr.pop)
+					end
+				end
+			end
+		when :left, :right
+			(0..3).each do |row|
+				arr = []
+				(0..3).each do |col|
+					arr.push get_square(col, row).val
+				end
+				old_arr = arr.clone
+				arr = handle_stack(arr)
+				if arr != old_arr
+					did_something_happen = true 
+				end
+				(0..3).each do |col|
+					square = get_square(col, row)
+					if direction == :left
+						square.set(arr.shift)
+					else
+						square.set(arr.pop)
+					end
+				end
+			end
+		end
+		if did_something_happen == true
+			fill_random_empty_square
+		end
+	end
+
+
+	def handle_stack(arr)
+		for i in 0..arr.length - 1
+			if arr[i] == 0
+				for j in i+1..arr.length-1 do
+			      	if arr[j] != 0
+        				arr[i],arr[j] = arr[j], arr[i]
+        				break
+      				end
+    			end
+  			end
+  			if arr[i] != 0
+    			for j in i+1..arr.length-1 do
+      				if arr[j]!= arr[i] and arr[j] != 0
+        				break
+      				elsif arr[j] == arr[i]
+        				arr[i] *= 2
+        				arr[j] = 0
+        				break
+      				end
+    			end
+  			end
+		end
+		return arr
+	end
+
+
+	def move_old(dir)
 		@squares.each do |square1|
 			if square1.val != 0
 				other_squares_in_that_direction = []
