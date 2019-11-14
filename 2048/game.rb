@@ -45,6 +45,9 @@ class Game
 				(0..3).each do |row|
 					arr.push get_square(col, row).val
 				end
+				if direction == :down
+					arr = arr.reverse
+				end
 				old_arr = arr.clone
 				arr = handle_stack(arr)
 				if arr != old_arr
@@ -64,6 +67,9 @@ class Game
 				arr = []
 				(0..3).each do |col|
 					arr.push get_square(col, row).val
+				end
+				if direction == :right
+					arr = arr.reverse
 				end
 				old_arr = arr.clone
 				arr = handle_stack(arr)
