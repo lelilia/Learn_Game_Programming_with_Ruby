@@ -23,6 +23,7 @@ class Square
 		@row = row
 		@col = col 
 		@val = val
+		@highlight = false
 	end
 
 	def draw
@@ -35,12 +36,16 @@ class Square
 			y3 = y2 + SQUARE_SIZE - SQUARE_BORDER
 			x4 = x1
 			y4 = y3
+
 			if @val > 2048
 				@color = Gosu::Color.argb(0xaaeb07ff)
 			else
 				@color = ("c"+@val.to_s).to_sym
 			end
 			c = @@colors[@color]
+			if @highlight == true
+				c = Gosu::Color::WHITE
+			end
 			@@window.draw_quad(x1, y1, c, x2, y2, c, x3, y3, c, x4, y4, c, 1)
 			x_center = x1 + (SQUARE_SIZE - SQUARE_BORDER) / 2
 			x_text = x_center - @@font.text_width("#{@val}") / 2
@@ -53,7 +58,8 @@ class Square
 		@val = 0
 	end
 
-	def set (val)
+	def set (val, highlight)
 		@val = val
+		@highlight = highlight
 	end
 end

@@ -71,7 +71,7 @@ class Game
 		else
 			random_new_value = 2
 		end	
-		@squares[empty_squares.sample].set(random_new_value)
+		@squares[empty_squares.sample].set(random_new_value, false)
 	end
 
 	def is_the_game_lost?
@@ -112,16 +112,16 @@ class Game
 					arr = arr.reverse
 				end
 				old_arr = arr.clone
-				arr = handle_stack(arr)
+				arr, merges = handle_stack(arr)
 				if arr != old_arr
 					did_something_happen = true
 				end
 				(0..NUMBER_OF_SQUARES - 1).each do |row|
 					square = get_square(col, row)
 					if direction == :up
-						square.set(arr.shift)
+						square.set(arr.shift, merges.shift)
 					else
-						square.set(arr.pop)
+						square.set(arr.pop, merges.pop)
 					end
 				end
 			end
@@ -135,16 +135,16 @@ class Game
 					arr = arr.reverse
 				end
 				old_arr = arr.clone
-				arr = handle_stack(arr)
+				arr, merges = handle_stack(arr)
 				if arr != old_arr
 					did_something_happen = true 
 				end
 				(0..NUMBER_OF_SQUARES - 1).each do |col|
 					square = get_square(col, row)
 					if direction == :left
-						square.set(arr.shift)
+						square.set(arr.shift, merges.shift)
 					else
-						square.set(arr.pop)
+						square.set(arr.pop, merges.pop)
 					end
 				end
 			end
@@ -156,11 +156,13 @@ class Game
 
 
 	def handle_stack(arr)
+		merges = [false, false, false, false]
 		for i in 0..arr.length - 1
 			if arr[i] == 0
 				for j in i+1..arr.length-1 do
 			      	if arr[j] != 0
         				arr[i],arr[j] = arr[j], arr[i]
+        				merges[i], merges[j] = true, false
         				break
       				end
     			end
@@ -171,6 +173,7 @@ class Game
         				break
       				elsif arr[j] == arr[i]
         				arr[i] *= 2
+        				merges[i] == true
         				## check for win state
         				if arr[i] == 2048 and @already_won == false
         					@win = true
@@ -182,7 +185,7 @@ class Game
     			end
   			end
 		end
-		return arr
+		return arr, merges
 	end		
 
 end
