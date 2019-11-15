@@ -45,7 +45,7 @@ class Square
 			x_center = x1 + (SQUARE_SIZE - SQUARE_BORDER) / 2
 			x_text = x_center - @@font.text_width("#{@val}") / 2
 			y_text = y1 + (SQUARE_SIZE - SQUARE_BORDER - FONT_SIZE)/2
-			@@font.draw("#{@val}", x_text, y_text, 2)
+			@@font.draw_text("#{@val}", x_text, y_text, 2)
 		end
 	end
 
