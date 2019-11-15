@@ -33,20 +33,20 @@ class Game
 			x_text = (WINDOW_SIZE - @font.text_width("You win!")) / 2
 			x_text_small = (WINDOW_SIZE - NUMBER_OF_SQUARES * SQUARE_SIZE) / 2
 			@window.draw_quad(0, 0, c, WINDOW_SIZE, 0, c, WINDOW_SIZE, WINDOW_SIZE, c, 0, WINDOW_SIZE, c, 4)
-			@font.draw('You win!', x_text, (WINDOW_SIZE - LARGE_FONT) / 2, 5)
-			@font_small.draw('PRESS', x_text_small, (WINDOW_SIZE - LARGE_FONT) / 2 + 3*SMALL_FONT, 5)
-			@font_small.draw('R to start again' , x_text_small, (WINDOW_SIZE - LARGE_FONT) / 2 + 4*SMALL_FONT, 5)
-			@font_small.draw('Esc to leave', x_text_small, (WINDOW_SIZE - LARGE_FONT) / 2 + 5 * SMALL_FONT, 5)
-			@font_small.draw('any arrow key to keep playing', x_text_small, (WINDOW_SIZE - LARGE_FONT) / 2 + 6 * SMALL_FONT, 5)
+			@font.draw_text('You win!', x_text, (WINDOW_SIZE - LARGE_FONT) / 2, 5)
+			@font_small.draw_text('PRESS', x_text_small, (WINDOW_SIZE - LARGE_FONT) / 2 + 3*SMALL_FONT, 5)
+			@font_small.draw_text('R to start again' , x_text_small, (WINDOW_SIZE - LARGE_FONT) / 2 + 4*SMALL_FONT, 5)
+			@font_small.draw_text('Esc to leave', x_text_small, (WINDOW_SIZE - LARGE_FONT) / 2 + 5 * SMALL_FONT, 5)
+			@font_small.draw_text('any arrow key to keep playing', x_text_small, (WINDOW_SIZE - LARGE_FONT) / 2 + 6 * SMALL_FONT, 5)
 		end
 		if is_the_game_lost?
 			c = Gosu::Color.argb(0xaa000000)
 			x_text_small = (WINDOW_SIZE - NUMBER_OF_SQUARES * SQUARE_SIZE) / 2
 			@window.draw_quad(0, 0, c, WINDOW_SIZE, 0, c, WINDOW_SIZE, WINDOW_SIZE, c, 0, WINDOW_SIZE, c, 4)
-			@font.draw('You lose!', (WINDOW_SIZE - @font.text_width("You lose!")) / 2, (WINDOW_SIZE - LARGE_FONT) / 2, 5)
-			@font_small.draw('PRESS', x_text_small, (WINDOW_SIZE - LARGE_FONT) / 2 + 3*SMALL_FONT, 5)
-			@font_small.draw('R to start again' , x_text_small, (WINDOW_SIZE - LARGE_FONT) / 2 + 4*SMALL_FONT, 5)
-			@font_small.draw('Esc to leave', x_text_small, (WINDOW_SIZE - LARGE_FONT) / 2 + 5 * SMALL_FONT, 5)
+			@font.draw_text('You lose!', (WINDOW_SIZE - @font.text_width("You lose!")) / 2, (WINDOW_SIZE - LARGE_FONT) / 2, 5)
+			@font_small.draw_text('PRESS', x_text_small, (WINDOW_SIZE - LARGE_FONT) / 2 + 3*SMALL_FONT, 5)
+			@font_small.draw_text('R to start again' , x_text_small, (WINDOW_SIZE - LARGE_FONT) / 2 + 4*SMALL_FONT, 5)
+			@font_small.draw_text('Esc to leave', x_text_small, (WINDOW_SIZE - LARGE_FONT) / 2 + 5 * SMALL_FONT, 5)
 		end
 	end
 
