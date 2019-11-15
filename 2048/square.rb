@@ -2,6 +2,8 @@ require 'gosu'
 
 class Square
 	FONT_SIZE = 45
+	SQUARE_SIZE = 100
+	SQUARE_BORDER = 4
 	attr_reader :row, :col, :val
 
 	def initialize(window, col, row, val)
@@ -25,12 +27,12 @@ class Square
 
 	def draw
 		if @val != 0
-			x1 = 22 + @col * 100
-			y1 = 22 + @row * 100
-			x2 = x1 + 96
+			x1 = 22 + @col * SQUARE_SIZE
+			y1 = 22 + @row * SQUARE_SIZE
+			x2 = x1 + SQUARE_SIZE - SQUARE_BORDER
 			y2 = y1
 			x3 = x2
-			y3 = y2 + 96
+			y3 = y2 + SQUARE_SIZE - SQUARE_BORDER
 			x4 = x1
 			y4 = y3
 			if @val > 2048
@@ -40,9 +42,9 @@ class Square
 			end
 			c = @@colors[@color]
 			@@window.draw_quad(x1, y1, c, x2, y2, c, x3, y3, c, x4, y4, c, 1)
-			x_center = x1 + 48
+			x_center = x1 + (SQUARE_SIZE - SQUARE_BORDER) / 2
 			x_text = x_center - @@font.text_width("#{@val}") / 2
-			y_text = y1 + (96 - FONT_SIZE)/2
+			y_text = y1 + (SQUARE_SIZE - SQUARE_BORDER - FONT_SIZE)/2
 			@@font.draw("#{@val}", x_text, y_text, 2)
 		end
 	end

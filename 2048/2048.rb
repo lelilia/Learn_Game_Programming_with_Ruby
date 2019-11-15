@@ -2,9 +2,13 @@ require 'gosu'
 require_relative 'game'
 
 class Game2048 < Gosu::Window
+	SQUARE_SIZE = 100
+	SQUARE_BORDER = 4
+	NUMBER_OF_SQUARES = 4
+	WINDOW_SIZE = (SQUARE_SIZE + SQUARE_BORDER * 2) * NUMBER_OF_SQUARES + 2 * SQUARE_BORDER
 
 	def initialize
-		super(440, 440)
+		super(WINDOW_SIZE, WINDOW_SIZE)
 		self.caption = '2048'
 		@game = Game.new(self)
 	end
