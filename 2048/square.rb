@@ -33,12 +33,15 @@ class Square
 			y3 = y2 + 96
 			x4 = x1
 			y4 = y3
-			@color = ("c"+@val.to_s).to_sym
+			if @val > 2048
+				@color = Gosu::Color.argb(0xaaeb07ff)
+			else
+				@color = ("c"+@val.to_s).to_sym
+			end
 			c = @@colors[@color]
 			@@window.draw_quad(x1, y1, c, x2, y2, c, x3, y3, c, x4, y4, c, 1)
 			x_center = x1 + 48
 			x_text = x_center - @@font.text_width("#{@val}") / 2
-			#y_text = y1 + 12
 			y_text = y1 + (96 - FONT_SIZE)/2
 			@@font.draw("#{@val}", x_text, y_text, 2)
 		end

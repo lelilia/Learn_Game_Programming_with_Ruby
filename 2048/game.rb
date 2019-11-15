@@ -66,14 +66,7 @@ class Game
 			end
 			(0..3).each do |row|
 				(0..2).each do |col|
-					if array_of_values[row * 4 + col] == array_of_values[row * 4 + col + 1]
-						return false
-					end
-				end
-			end
-			(0..3).each do |col|
-				(0..2).each do |row|
-					if array_of_values[row * 4 + col] == array_of_values[(row + 1) * 4 + col]
+					if array_of_values[row * 4 + col] == array_of_values[row * 4 + col + 1] or array_of_values[col * 4 + row] == array_of_values[(col+1)*4 + row]
 						return false
 					end
 				end
