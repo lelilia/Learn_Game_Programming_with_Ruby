@@ -3,6 +3,7 @@ require_relative 'square'
 class Game
 	def initialize(window)
 		@window = window
+		@font = Gosu::Font.new(72)
 		@squares = []
 		(0..3).each do |row|
 			(0..3).each do |col|
@@ -12,15 +13,9 @@ class Game
 		end
 		fill_random_empty_square
 		fill_random_empty_square
-
 	end
 
-	def draw
-		@squares.each do |square|
-			square.draw
-		end
-		#game over?
-	end
+
 
 	def fill_random_empty_square
 		empty_squares = []
@@ -29,8 +24,52 @@ class Game
 				empty_squares.push square.row*4+square.col 
 			end
 		end
+		if empty_squares == []
+			lose?
+		end
 		@squares[empty_squares.sample].set(2)
 	end
+
+	def lose?
+		@values = []
+		@squares.each do |square|
+			@values.push square.val
+		end
+		(0..3).each do |row|
+			(0..2). each do |column|
+				if @values[row*4 + column] == @values[row*4 + column + 1]						
+					break
+				end
+			end
+		end
+		(0..3).each do |column|
+			(0..2). each do |row|
+				if @values[row*4 + column] == @values[(row+1)*4 + column]
+					break
+				end
+			end
+		end
+		@lose = true
+	end
+
+	def ignore_me
+		(0..3).each do |row|
+			(0..2).each do |column|
+				if get_square(row, column).val == get_square(row, column+1).val
+					return false
+				end
+			end
+		end
+		(0..3).each do |column|
+			(0..2).each do |row|
+				if get_square(row, column).val == get_square(row + 1, column).val
+					return false
+				end
+			end
+		end
+	end
+
+
 
 	def get_square(col, row)
 		return @squares[row*4+col]
@@ -108,6 +147,10 @@ class Game
         				break
       				elsif arr[j] == arr[i]
         				arr[i] *= 2
+        				## check for win state
+        				if arr[i] == 2048
+        					@win = true
+        				end
         				arr[j] = 0
         				break
       				end
@@ -117,7 +160,22 @@ class Game
 		return arr
 	end
 
-
+	def draw
+		@squares.each do |square|
+			square.draw
+		end
+		if @win == true
+			c = Gosu::Color.argb(0x33000000)
+			@window.draw_quad(0, 0, c, 440, 0, c, 440, 440, c, 0, 440, c, 4)
+			@font.draw('You win!', 100, 184, 5)
+		end
+		if @lose == true
+			c = Gosu::Color.argb(0x33000000)
+			@window.draw_quad(0, 0, c, 440, 0, c, 440, 440, c, 0, 440, c, 4)
+			@font.draw('You lose!', 100, 184, 5)
+			@font.draw(@values, 20, 184, 5)
+		end
+	end
 	
 							
 					
