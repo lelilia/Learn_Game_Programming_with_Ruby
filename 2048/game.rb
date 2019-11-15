@@ -162,7 +162,10 @@ class Game
 				for j in i+1..arr.length-1 do
 			      	if arr[j] != 0
         				arr[i],arr[j] = arr[j], arr[i]
-        				merges[i], merges[j] = true, false
+        				if merges[j]
+        					merges[i] = true
+        					merges[j] = false
+        				end
         				break
       				end
     			end
@@ -173,7 +176,7 @@ class Game
         				break
       				elsif arr[j] == arr[i]
         				arr[i] *= 2
-        				merges[i] == true
+        				merges[i] = true
         				## check for win state
         				if arr[i] == 2048 and @already_won == false
         					@win = true

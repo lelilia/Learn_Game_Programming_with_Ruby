@@ -37,6 +37,17 @@ class Square
 			x4 = x1
 			y4 = y3
 
+			if @highlight
+				x1 -= SQUARE_BORDER
+				y1 -= SQUARE_BORDER
+				x2 += SQUARE_BORDER
+				y2  = y1
+				x3  = x2
+				y3 += SQUARE_BORDER
+				x4 = x1
+				y4 = y3
+			end
+
 			if @val > 2048
 				@color = Gosu::Color.argb(0xaaeb07ff)
 			else
@@ -46,6 +57,7 @@ class Square
 			if @highlight == true
 				c = Gosu::Color::WHITE
 			end
+			@highlight = false
 			@@window.draw_quad(x1, y1, c, x2, y2, c, x3, y3, c, x4, y4, c, 1)
 			x_center = x1 + (SQUARE_SIZE - SQUARE_BORDER) / 2
 			x_text = x_center - @@font.text_width("#{@val}") / 2
