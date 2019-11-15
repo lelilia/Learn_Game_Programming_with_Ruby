@@ -15,61 +15,73 @@ class Game
 		fill_random_empty_square
 	end
 
+	def draw
+		@squares.each do |square|
+			square.draw
+		end
+		if @win == true
+			c = Gosu::Color.argb(0x33000000)
+			@window.draw_quad(0, 0, c, 440, 0, c, 440, 440, c, 0, 440, c, 4)
+			@font.draw('You win!', 100, 184, 5)
+		end
+		if is_the_game_lost?
+			c = Gosu::Color.argb(0x33000000)
+			@window.draw_quad(0, 0, c, 440, 0, c, 440, 440, c, 0, 440, c, 4)
+			@font.draw('You lose!', 100, 184, 5)
+			@font.draw(@values, 20, 184, 5)
+		end
+	end
 
-
-	def fill_random_empty_square
+	def find_empty_squares
 		empty_squares = []
 		@squares.each do |square|
 			if square.val == 0
 				empty_squares.push square.row*4+square.col 
 			end
 		end
-		if empty_squares == []
-			lose?
-		end
-		@squares[empty_squares.sample].set(2)
+		return empty_squares
 	end
 
-	def lose?
-		@values = []
-		@squares.each do |square|
-			@values.push square.val
-		end
-		(0..3).each do |row|
-			(0..2). each do |column|
-				if @values[row*4 + column] == @values[row*4 + column + 1]						
-					break
-				end
-			end
-		end
-		(0..3).each do |column|
-			(0..2). each do |row|
-				if @values[row*4 + column] == @values[(row+1)*4 + column]
-					break
-				end
-			end
-		end
-		@lose = true
+	def fill_random_empty_square
+		empty_squares = find_empty_squares
+		
+		random_new_value = rand
+		if random_new_value > 0.99
+			random_new_value = 8
+		elsif random_new_value > 0.95
+			random_new_value = 4
+		else
+			random_new_value = 2
+		end	
+		@squares[empty_squares.sample].set(random_new_value)
 	end
 
-	def ignore_me
-		(0..3).each do |row|
-			(0..2).each do |column|
-				if get_square(row, column).val == get_square(row, column+1).val
-					return false
+	def is_the_game_lost?
+		if find_empty_squares != []
+			return false
+		else
+			array_of_values = []
+			@squares.each do |square|
+				array_of_values.push square.val
+			end
+			(0..3).each do |row|
+				(0..2).each do |col|
+					if array_of_values[row * 4 + col] == array_of_values[row * 4 + col + 1]
+						return false
+					end
 				end
 			end
-		end
-		(0..3).each do |column|
-			(0..2).each do |row|
-				if get_square(row, column).val == get_square(row + 1, column).val
-					return false
+			(0..3).each do |col|
+				(0..2).each do |row|
+					if array_of_values[row * 4 + col] == array_of_values[(row + 1) * 4 + col]
+						return false
+					end
 				end
 			end
+			return true
 		end
+
 	end
-
-
 
 	def get_square(col, row)
 		return @squares[row*4+col]
@@ -160,22 +172,7 @@ class Game
 		return arr
 	end
 
-	def draw
-		@squares.each do |square|
-			square.draw
-		end
-		if @win == true
-			c = Gosu::Color.argb(0x33000000)
-			@window.draw_quad(0, 0, c, 440, 0, c, 440, 440, c, 0, 440, c, 4)
-			@font.draw('You win!', 100, 184, 5)
-		end
-		if @lose == true
-			c = Gosu::Color.argb(0x33000000)
-			@window.draw_quad(0, 0, c, 440, 0, c, 440, 440, c, 0, 440, c, 4)
-			@font.draw('You lose!', 100, 184, 5)
-			@font.draw(@values, 20, 184, 5)
-		end
-	end
+
 	
 							
 					
