@@ -4,6 +4,7 @@ class Game
 	def initialize(window)
 		@window = window
 		@font = Gosu::Font.new(72)
+		@already_won = false
 		@squares = []
 		(0..3).each do |row|
 			(0..3).each do |col|
@@ -81,6 +82,7 @@ class Game
 	end
 
 	def move(direction)
+		@win = false
 		did_something_happen = false
 		case direction
 		when :up, :down
@@ -153,8 +155,9 @@ class Game
       				elsif arr[j] == arr[i]
         				arr[i] *= 2
         				## check for win state
-        				if arr[i] == 2048
+        				if arr[i] == 2048 and @already_won == false
         					@win = true
+        					@already_won = true
         				end
         				arr[j] = 0
         				break
