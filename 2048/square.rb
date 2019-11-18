@@ -32,21 +32,32 @@ class Square
 			top    = 22 + @row * SQUARE_SIZE
 			right  = left + SQUARE_SIZE - SQUARE_BORDER
 			bottom = top  + SQUARE_SIZE - SQUARE_BORDER
+			x_center = left + (SQUARE_SIZE - SQUARE_BORDER) / 2
+			x_text = x_center - @@font.text_width("#{@val}") / 2
+			y_text = top + (SQUARE_SIZE - SQUARE_BORDER - FONT_SIZE)/2
 
 			change = 0
-			if @highlight == :new
-				change = SQUARE_SIZE / 5
-				@highlight = :new2
-			elsif @highlight == :new2
-				change = SQUARE_SIZE / 4
-				@highlight = :new3
-			elsif @highlight == :new3
-				change = SQUARE_SIZE / 3
-				@highlight = :new4
-			elsif @highlight == :new4
-				change = SQUARE_SIZE / 2
-				@highlight = :new4
+
+			if @val > 2048
+				@color = Gosu::Color.argb(0xaaeb07ff)
+			else
+				@color = ("c"+@val.to_s).to_sym
 			end
+			c = @@colors[@color]
+			
+			if @highlight == :new
+				new_frame_count ||= 1
+				if new_frame_count < 100
+					change = SQUARE_SIZE * 0.3
+					new_frame_count += 1
+					c = Gosu::Color::RED
+				else
+					@highlight == :default
+					new_frame_count = nil 
+				end
+			end
+
+
 
 				
 
@@ -57,28 +68,21 @@ class Square
 				bottom += SQUARE_BORDER / 2
 			end
 
-			left -= change
-			right += change
+			left += change
+			right -= change
 			top += change
 			bottom -= change
 
-			
 
-			if @val > 2048
-				@color = Gosu::Color.argb(0xaaeb07ff)
-			else
-				@color = ("c"+@val.to_s).to_sym
-			end
-			c = @@colors[@color]
-			if @highlight == :merge or @highlight == :new
+			
+			if @highlight == :merge 
 				c = Gosu::Color::WHITE
 			end
-			@highlight = :default
+			#@highlight = :default
 			@@window.draw_quad(left, top, c, right, top, c, right, bottom, c, left, bottom, c, 1)
-			x_center = left + (SQUARE_SIZE - SQUARE_BORDER) / 2
-			x_text = x_center - @@font.text_width("#{@val}") / 2
-			y_text = top + (SQUARE_SIZE - SQUARE_BORDER - FONT_SIZE)/2
+			
 			@@font.draw_text("#{@val}", x_text, y_text, 2)
+
 		end
 	end
 
