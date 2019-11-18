@@ -46,39 +46,34 @@ class Square
 			c = @@colors[@color]
 			
 			if @highlight == :new
-				new_frame_count ||= 1
-				if new_frame_count < 100
-					change = SQUARE_SIZE * 0.3
-					new_frame_count += 1
-					c = Gosu::Color::RED
+				@new_frame_count ||= 1
+				if @new_frame_count < 16
+					change = - SQUARE_SIZE * (16 - @new_frame_count) / 32
+					@new_frame_count += 1
 				else
-					@highlight == :default
-					new_frame_count = nil 
+					@highlight = :default
+					@new_frame_count = nil 
+				end
+			elsif @highlight == :merge
+				@merge_frame_count ||= 1
+				if @merge_frame_count < 16
+					change = 4.0 / 16 * @merge_frame_count
+					@merge_frame_count += 1
+				else
+					@highlight = :default
+					@merge_frame_count = nil
 				end
 			end
 
 
 
-				
-
-			if @highlight == :merge
-				left   -= SQUARE_BORDER / 2
-				top    -= SQUARE_BORDER / 2
-				right  += SQUARE_BORDER / 2
-				bottom += SQUARE_BORDER / 2
-			end
-
-			left += change
-			right -= change
-			top += change
-			bottom -= change
-
-
 			
-			if @highlight == :merge 
-				c = Gosu::Color::WHITE
-			end
-			#@highlight = :default
+
+			left -= change
+			right += change
+			top -= change
+			bottom += change
+
 			@@window.draw_quad(left, top, c, right, top, c, right, bottom, c, left, bottom, c, 1)
 			
 			@@font.draw_text("#{@val}", x_text, y_text, 2)

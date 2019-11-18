@@ -162,7 +162,7 @@ class Game
 				for j in i+1..arr.length-1 do
 			      	if arr[j] != 0
         				arr[i],arr[j] = arr[j], arr[i]
-        				if merges[j]
+        				if merges[j] == :merge
         					merges[i] = :merge
         					merges[j] = :default
         				end
