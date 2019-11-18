@@ -45,6 +45,22 @@ class Escape < Gosu::Window
 				@boulders.push Boulder.new(self, 200 + rand(400), -20)
 			end
 		end
+		if button_down?(Gosu::KbRight)
+			@player.move_right
+		elsif button_down?(Gosu::KbLeft)
+			@player.move_left
+		else
+			@player.stand
+		end	
+	end
+
+	def button_down(id)
+		if id == Gosu::KbSpace
+			@player.jump
+		end
+		if id == Gosu::KbQ or id == Gosu::KbEscape
+			close
+		end
 	end
 
 	def draw
