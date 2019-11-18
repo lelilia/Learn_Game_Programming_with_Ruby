@@ -23,30 +23,20 @@ class Square
 		@row = row
 		@col = col 
 		@val = val
-		@highlight = false
+		@highlight = :default
 	end
 
 	def draw
 		if @val != 0
-			x1 = 22 + @col * SQUARE_SIZE
-			y1 = 22 + @row * SQUARE_SIZE
-			x2 = x1 + SQUARE_SIZE - SQUARE_BORDER
-			y2 = y1
-			x3 = x2
-			y3 = y2 + SQUARE_SIZE - SQUARE_BORDER
-			x4 = x1
-			y4 = y3
+			left   = 22 + @col * SQUARE_SIZE
+			top    = 22 + @row * SQUARE_SIZE
+			right  = left + SQUARE_SIZE - SQUARE_BORDER
+			bottom = top  + SQUARE_SIZE - SQUARE_BORDER
+			x_center = left + (SQUARE_SIZE - SQUARE_BORDER) / 2
+			x_text = x_center - @@font.text_width("#{@val}") / 2
+			y_text = top + (SQUARE_SIZE - SQUARE_BORDER - FONT_SIZE)/2
 
-			if @highlight
-				x1 -= SQUARE_BORDER
-				y1 -= SQUARE_BORDER
-				x2 += SQUARE_BORDER
-				y2  = y1
-				x3  = x2
-				y3 += SQUARE_BORDER
-				x4 = x1
-				y4 = y3
-			end
+			change = 0
 
 			if @val > 2048
 				@color = Gosu::Color.argb(0xaaeb07ff)
@@ -54,15 +44,40 @@ class Square
 				@color = ("c"+@val.to_s).to_sym
 			end
 			c = @@colors[@color]
-			if @highlight == true
-				c = Gosu::Color::WHITE
+			
+			if @highlight == :new
+				@new_frame_count ||= 1
+				if @new_frame_count < 16
+					change = - SQUARE_SIZE * (16 - @new_frame_count) / 32
+					@new_frame_count += 1
+				else
+					@highlight = :default
+					@new_frame_count = nil 
+				end
+			elsif @highlight == :merge
+				@merge_frame_count ||= 1
+				if @merge_frame_count < 16
+					change = 4.0 / 16 * @merge_frame_count
+					@merge_frame_count += 1
+				else
+					@highlight = :default
+					@merge_frame_count = nil
+				end
 			end
-			@highlight = false
-			@@window.draw_quad(x1, y1, c, x2, y2, c, x3, y3, c, x4, y4, c, 1)
-			x_center = x1 + (SQUARE_SIZE - SQUARE_BORDER) / 2
-			x_text = x_center - @@font.text_width("#{@val}") / 2
-			y_text = y1 + (SQUARE_SIZE - SQUARE_BORDER - FONT_SIZE)/2
+
+
+
+			
+
+			left -= change
+			right += change
+			top -= change
+			bottom += change
+
+			@@window.draw_quad(left, top, c, right, top, c, right, bottom, c, left, bottom, c, 1)
+			
 			@@font.draw_text("#{@val}", x_text, y_text, 2)
+
 		end
 	end
 

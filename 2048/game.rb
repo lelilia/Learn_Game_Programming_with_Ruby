@@ -71,7 +71,7 @@ class Game
 		else
 			random_new_value = 2
 		end	
-		@squares[empty_squares.sample].set(random_new_value, false)
+		@squares[empty_squares.sample].set(random_new_value, :new)
 	end
 
 	def is_the_game_lost?
@@ -156,15 +156,15 @@ class Game
 
 
 	def handle_stack(arr)
-		merges = [false, false, false, false]
+		merges = Array.new(NUMBER_OF_SQUARES, :default)
 		for i in 0..arr.length - 1
 			if arr[i] == 0
 				for j in i+1..arr.length-1 do
 			      	if arr[j] != 0
         				arr[i],arr[j] = arr[j], arr[i]
-        				if merges[j]
-        					merges[i] = true
-        					merges[j] = false
+        				if merges[j] == :merge
+        					merges[i] = :merge
+        					merges[j] = :default
         				end
         				break
       				end
@@ -176,7 +176,7 @@ class Game
         				break
       				elsif arr[j] == arr[i]
         				arr[i] *= 2
-        				merges[i] = true
+        				merges[i] = :merge
         				## check for win state
         				if arr[i] == 2048 and @already_won == false
         					@win = true
