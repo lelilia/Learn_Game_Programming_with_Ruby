@@ -23,30 +23,46 @@ class Square
 		@row = row
 		@col = col 
 		@val = val
-		@highlight = false
+		@highlight = :default
 	end
 
 	def draw
 		if @val != 0
-			x1 = 22 + @col * SQUARE_SIZE
-			y1 = 22 + @row * SQUARE_SIZE
-			x2 = x1 + SQUARE_SIZE - SQUARE_BORDER
-			y2 = y1
-			x3 = x2
-			y3 = y2 + SQUARE_SIZE - SQUARE_BORDER
-			x4 = x1
-			y4 = y3
+			left   = 22 + @col * SQUARE_SIZE
+			top    = 22 + @row * SQUARE_SIZE
+			right  = left + SQUARE_SIZE - SQUARE_BORDER
+			bottom = top  + SQUARE_SIZE - SQUARE_BORDER
 
-			if @highlight
-				x1 -= SQUARE_BORDER
-				y1 -= SQUARE_BORDER
-				x2 += SQUARE_BORDER
-				y2  = y1
-				x3  = x2
-				y3 += SQUARE_BORDER
-				x4 = x1
-				y4 = y3
+			change = 0
+			if @highlight == :new
+				change = SQUARE_SIZE / 5
+				@highlight = :new2
+			elsif @highlight == :new2
+				change = SQUARE_SIZE / 4
+				@highlight = :new3
+			elsif @highlight == :new3
+				change = SQUARE_SIZE / 3
+				@highlight = :new4
+			elsif @highlight == :new4
+				change = SQUARE_SIZE / 2
+				@highlight = :new4
 			end
+
+				
+
+			if @highlight == :merge
+				left   -= SQUARE_BORDER / 2
+				top    -= SQUARE_BORDER / 2
+				right  += SQUARE_BORDER / 2
+				bottom += SQUARE_BORDER / 2
+			end
+
+			left -= change
+			right += change
+			top += change
+			bottom -= change
+
+			
 
 			if @val > 2048
 				@color = Gosu::Color.argb(0xaaeb07ff)
@@ -54,14 +70,14 @@ class Square
 				@color = ("c"+@val.to_s).to_sym
 			end
 			c = @@colors[@color]
-			if @highlight == true
+			if @highlight == :merge or @highlight == :new
 				c = Gosu::Color::WHITE
 			end
-			@highlight = false
-			@@window.draw_quad(x1, y1, c, x2, y2, c, x3, y3, c, x4, y4, c, 1)
-			x_center = x1 + (SQUARE_SIZE - SQUARE_BORDER) / 2
+			@highlight = :default
+			@@window.draw_quad(left, top, c, right, top, c, right, bottom, c, left, bottom, c, 1)
+			x_center = left + (SQUARE_SIZE - SQUARE_BORDER) / 2
 			x_text = x_center - @@font.text_width("#{@val}") / 2
-			y_text = y1 + (SQUARE_SIZE - SQUARE_BORDER - FONT_SIZE)/2
+			y_text = top + (SQUARE_SIZE - SQUARE_BORDER - FONT_SIZE)/2
 			@@font.draw_text("#{@val}", x_text, y_text, 2)
 		end
 	end
