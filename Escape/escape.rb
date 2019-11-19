@@ -30,10 +30,20 @@ class Escape < Gosu::Window
 		@space.gravity = CP::Vec2.new(0.0, GRAVITY)
 		@boulders = []
 		@platforms = malke_platforms
+
 		@floor = Wall.new(self, 400, 810, 800, 20)
 		@left_wall = Wall.new(self, -10, 400, 20, 800)
 		@right_wall = Wall.new(self, 810, 470, 20, 660)
 		@player = Chip.new(self, 70, 700)
+	end
+
+	def malke_platforms
+		platforms = []
+		platforms.push Platform.new(self, 150, 700)
+		platforms.push Platform.new(self, 320, 650)
+		platforms.push Platform.new(self, 150, 500)
+		platforms.push Platform.new(self, 470, 550)
+		return platforms
 	end
 
 	def update
@@ -44,13 +54,15 @@ class Escape < Gosu::Window
 			if rand < BOULDER_FREQUENCY
 				@boulders.push Boulder.new(self, 200 + rand(400), -20)
 			end
-		end
-		if button_down?(Gosu::KbRight)
-			@player.move_right
-		elsif button_down?(Gosu::KbLeft)
-			@player.move_left
-		else
-			@player.stand
+			@player.check_footing(@platforms + @boulders)
+		
+			if button_down?(Gosu::KbRight)
+				@player.move_right
+			elsif button_down?(Gosu::KbLeft)
+				@player.move_left
+			else
+				@player.stand
+			end
 		end	
 	end
 
@@ -75,14 +87,7 @@ class Escape < Gosu::Window
 		@player.draw
 	end
 
-	def malke_platforms
-		platforms = []
-		platforms.push Platform.new(self, 150, 700)
-		platforms.push Platform.new(self, 320, 650)
-		platforms.push Platform.new(self, 150, 500)
-		platforms.push Platform.new(self, 470, 550)
-		return platforms
-	end
+	
 end
 
 window = Escape.new
