@@ -13,6 +13,7 @@ require_relative 'boulder'
 require_relative 'platform'
 require_relative 'wall'
 require_relative 'chip'
+require_relative 'moving_platform'
 
 class Escape < Gosu::Window
 	GRAVITY = 400.0
@@ -35,6 +36,8 @@ class Escape < Gosu::Window
 		@left_wall = Wall.new(self, -10, 400, 20, 800)
 		@right_wall = Wall.new(self, 810, 470, 20, 660)
 		@player = Chip.new(self, 70, 700)
+		@sign = Gosu::Image.new('images/exit.png')
+		@font = Gosu::Font.new(40)
 	end
 
 	def malke_platforms
@@ -43,6 +46,15 @@ class Escape < Gosu::Window
 		platforms.push Platform.new(self, 320, 650)
 		platforms.push Platform.new(self, 150, 500)
 		platforms.push Platform.new(self, 470, 550)
+		platforms.push MovingPlatform.new(self, 580, 600, 70, :vertical)
+		platforms.push Platform.new(self, 320, 440)
+		platforms.push Platform.new(self, 600, 150)
+		platforms.push Platform.new(self, 700, 450)
+		platforms.push Platform.new(self, 580, 300)
+		platforms.push MovingPlatform.new(self, 190, 330, 50, :vertical)
+		platforms.push MovingPlatform.new(self, 450, 230, 70, :horizontal)
+		platforms.push Platform.new(self, 750, 140)
+		platforms.push Platform.new(self, 700, 700)
 		return platforms
 	end
 
@@ -54,6 +66,9 @@ class Escape < Gosu::Window
 			if rand < BOULDER_FREQUENCY
 				@boulders.push Boulder.new(self, 200 + rand(400), -20)
 			end
+			@platforms.each do |platform|
+				platform.move if platform.respond_to?(:move)
+			end
 			@player.check_footing(@platforms + @boulders)
 		
 			if button_down?(Gosu::KbRight)
@@ -62,6 +77,10 @@ class Escape < Gosu::Window
 				@player.move_left
 			else
 				@player.stand
+			end
+			if @player.x > 820
+				@game_over = true
+				@win_time = Gosu.milliseconds
 			end
 		end	
 	end
@@ -85,6 +104,14 @@ class Escape < Gosu::Window
 			platform.draw
 		end
 		@player.draw
+		@sign.draw(650, 30, 1)
+		if @game_over == false
+			@seconds = (Gosu.milliseconds / 1000).to_i
+			@font.draw("#{@seconds}", 10, 20, 3, 1, 1, 0xff00ff00)
+		else
+			@font.draw("#{win_time / 1000}", 10, 20, 3, 1, 1, 0xff00ff00)
+			@font.draw("Game Won!", 200, 300, 3, 2, 2, 0xff00ff00)
+		end
 	end
 
 	

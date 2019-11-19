@@ -98,4 +98,8 @@ class Chip
 	def stand
 		@action = :stand unless off_ground
 	end
+
+	def x
+		@body.p.x
+	end
 end
