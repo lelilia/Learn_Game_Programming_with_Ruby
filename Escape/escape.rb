@@ -107,10 +107,10 @@ class Escape < Gosu::Window
 		@sign.draw(650, 30, 1)
 		if @game_over == false
 			@seconds = (Gosu.milliseconds / 1000).to_i
-			@font.draw("#{@seconds}", 10, 20, 3, 1, 1, 0xff00ff00)
+			@font.draw_text("#{@seconds}", 10, 20, 3, 1, 1, 0xff00ff00)
 		else
-			@font.draw("#{win_time / 1000}", 10, 20, 3, 1, 1, 0xff00ff00)
-			@font.draw("Game Won!", 200, 300, 3, 2, 2, 0xff00ff00)
+			@font.draw_text("#{@win_time / 1000}", 10, 20, 3, 1, 1, 0xff00ff00)
+			@font.draw_text("Game Won!", 200, 300, 3, 2, 2, 0xff00ff00)
 		end
 	end
 
