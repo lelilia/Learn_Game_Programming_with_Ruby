@@ -20,7 +20,7 @@ class Player
 	end
 
 	def turn_left
-		@angle += ROTATION_SPEED
+		@angle -= ROTATION_SPEED
 	end
 
 	def accelerate
@@ -57,6 +57,6 @@ class Player
 	end
 
 	def draw 
-		@image.draw_rot(@x, @y, 1, @angle)
+		@image.draw_rot(@x, @y, 2, @angle)
 	end
 end

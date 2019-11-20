@@ -6,9 +6,11 @@ class Heart
 		@x = x
 		@y = y
 		@directon = angle
-		@image = Gosu::Image.new('images/Emoji_u1f497.png')
+		@image1 = Gosu::Image.new('images/Emoji_u1f497.png')
+		@image2 = Gosu::Image.new('images/Emoji_u1f496.png')
 		@radius = 16
 		@window = window
+		@image_index = 0
 	end
 
 	def onscreen?
@@ -25,6 +27,12 @@ class Heart
 	end
 
 	def draw
-		@image.draw(@x - @radius, @y - @radius, 1)
+		if @image_index < 10
+			@image1.draw(@x - @radius, @y - @radius, 1)
+			@image_index += 1
+		else
+			@image2.draw(@x - @radius, @y - @radius, 1)
+			@image_index = (@image_index + 1) % 20
+		end
 	end
 end

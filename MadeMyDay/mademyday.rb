@@ -55,8 +55,15 @@ class MadeMyDay < Gosu::Window
 				end
 			end
 		end
-
-
+		@hearts.dup.each do |heart|
+			@hearts.delete heart unless heart.onscreen?
+		end
+		@friends.dup.each do |friend|
+			@friends.delete friend if friend.y < - 3 * friend.radius
+		end
+		@happyfriends.dup.each do |happyfriend|
+			@happyfriends.delete happyfriend if happyfriend.y > HEIGHT + happyfriend.radius 
+		end
 	end
 
 	def draw
