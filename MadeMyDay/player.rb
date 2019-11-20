@@ -11,7 +11,7 @@ class Player
 		@image = Gosu::Image.new('images/Phantom_Open_Emoji_1f60d.png')
 		@velocity_x = 0
 		@velocity_y = 0
-		@radius = 64
+		@radius = 32
 		@window = window
 	end
 
@@ -28,11 +28,20 @@ class Player
 		@velocity_y += Gosu::offset_y(@angle, ACCELARATION)
 	end
 
+	def backwards
+		@velocity_x -= Gosu::offset_x(@angle, ACCELARATION)
+		@velocity_y -= Gosu::offset_y(@angle, ACCELARATION)
+	end
+
 	def move
 		@x += @velocity_x
 		@y += @velocity_y
 		@velocity_x *= FRICTION
 		@velocity_y *= FRICTION
+		if @x > @window.width - @radius
+			@velocity_x = 0
+			@x = @window.width - @radius
+		end
 		if @x < @radius
 			@velocity_x = 0
 			@x = @radius
@@ -40,6 +49,10 @@ class Player
 		if @y > @window.height - @radius
 			@velocity_y = 0
 			@y = @window.height - @radius
+		end
+		if @y < @radius
+			@velocity_y = 0
+			@y = @radius
 		end
 	end
 
