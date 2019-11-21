@@ -1,5 +1,7 @@
 class Friend
 	SPEED = 4
+	SPEED_MIN = 2
+	SPEED_MAX = 8
 	attr_reader :x, :y, :radius, :angle, :speed
 
 	def initialize(window)
@@ -40,5 +42,13 @@ class Friend
 		@v_x = v_x
 		@v_y = v_y
 		@speed = (@v_x**2 + @v_y**2)**0.5
+		if @speed > SPEED_MAX
+			@v_x = Gosu::offset_x(@angle, SPEED_MAX)
+			@v_y = Gosu::offset_y(@angle, SPEED_MAX)
+		elsif @speed < SPEED_MIN
+			@v_x = Gosu::offset_x(@angle, SPEED_MIN)
+			@v_y = Gosu::offset_y(@angle, SPEED_MIN)
+		end
+			
 	end
 end

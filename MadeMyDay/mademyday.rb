@@ -92,10 +92,15 @@ class MadeMyDay < Gosu::Window
 					if distance < friend1.radius + friend2.radius
 						phi = (Gosu::angle(friend1.x, friend1.y, friend2.x, friend2.y) + 90) 
 
-						v1x = friend2.speed * Gosu::offset_y(friend2.angle - phi, 1) * Gosu::offset_y(phi, 1) + friend1.speed * Gosu::offset_x(friend2.angle - phi, 1) * Gosu::offset_y(phi + 90, 1)
-						v1y = friend2.speed * Gosu::offset_y(friend2.angle - phi, 1) * Gosu::offset_x(phi, 1) + friend1.speed * Gosu::offset_x(friend2.angle - phi, 1) * Gosu::offset_y(phi + 90, 1)
-						v2x = friend1.speed * Gosu::offset_y(friend1.angle - phi, 1) * Gosu::offset_y(phi, 1) + friend2.speed * Gosu::offset_x(friend1.angle - phi, 1) * Gosu::offset_y(phi + 90, 1)
-						v2y = friend1.speed * Gosu::offset_y(friend1.angle - phi, 1) * Gosu::offset_x(phi, 1) + friend2.speed * Gosu::offset_x(friend1.angle - phi, 1) * Gosu::offset_y(phi + 90, 1)
+						v1x = friend1.speed * Gosu::offset_y(friend2.angle - phi, 1) * Gosu::offset_y(phi, 1) + friend1.speed * Gosu::offset_x(friend2.angle - phi, 1) * Gosu::offset_y(phi + 90, 1)
+						v1y = friend1.speed * Gosu::offset_y(friend2.angle - phi, 1) * Gosu::offset_x(phi, 1) + friend1.speed * Gosu::offset_x(friend2.angle - phi, 1) * Gosu::offset_y(phi + 90, 1)
+						v2x = friend2.speed * Gosu::offset_y(friend1.angle - phi, 1) * Gosu::offset_y(phi, 1) + friend2.speed * Gosu::offset_x(friend1.angle - phi, 1) * Gosu::offset_y(phi + 90, 1)
+						v2y = friend2.speed * Gosu::offset_y(friend1.angle - phi, 1) * Gosu::offset_x(phi, 1) + friend2.speed * Gosu::offset_x(friend1.angle - phi, 1) * Gosu::offset_y(phi + 90, 1)
+						
+						#v1x = SPEED * Gosu::offset_y(friend2.angle - phi, 1) * Gosu::offset_y(phi, 1) + SPEED * Gosu::offset_x(friend2.angle - phi, 1) * Gosu::offset_y(phi + 90, 1)
+						#v1y = SPEED * Gosu::offset_y(friend2.angle - phi, 1) * Gosu::offset_x(phi, 1) + SPEED * Gosu::offset_x(friend2.angle - phi, 1) * Gosu::offset_y(phi + 90, 1)
+						#v2x = SPEED * Gosu::offset_y(friend1.angle - phi, 1) * Gosu::offset_y(phi, 1) + SPEED * Gosu::offset_x(friend1.angle - phi, 1) * Gosu::offset_y(phi + 90, 1)
+						#v2y = SPEED * Gosu::offset_y(friend1.angle - phi, 1) * Gosu::offset_x(phi, 1) + SPEED * Gosu::offset_x(friend1.angle - phi, 1) * Gosu::offset_y(phi + 90, 1)
 						
 						friend1.set_velocity(v1x, v1y)
 						friend2.set_velocity(v2x, v2y)
@@ -103,24 +108,7 @@ class MadeMyDay < Gosu::Window
 				end
 			end
 		end
-		#@friends.dup.each do |friend1|
-		#	@friends.dup.each do |friend2|
-		#		if not (friend1.x == friend2.x and friend1.y == friend2.y)
-		#			distance = Gosu::distance(friend1.x, friend1.y, friend2.x, friend2.y)
-		#			if distance < friend1.radius + friend2.radius
-		#				tangent_angle = (Gosu::angle(friend1.x, friend1.y, friend2.x, friend2.y) + 90) * Math::PI / 180
-		#				theta1 = friend1.angle * Math::PI / 180
-		#				theta2 = friend2.angle * Math::PI / 180
-		#				v1x = friend2.speed * Math.cos(theta2 - tangent_angle) * Math.cos(tangent_angle) + friend1.speed * Math.sin(theta2 - tangent_angle) * Math.cos(tangent_angle + Math::PI / 2)
-		#				v1y = friend2.speed * Math.cos(theta2 - tangent_angle) * Math.sin(tangent_angle) + friend1.speed * Math.sin(theta2 - tangent_angle) * Math.cos(tangent_angle + Math::PI / 2)
-		#				v2x = friend1.speed * Math.cos(theta1 - tangent_angle) * Math.cos(tangent_angle) + friend2.speed * Math.sin(theta1 - tangent_angle) * Math.cos(tangent_angle + Math::PI / 2)
-		#				v2y = friend1.speed * Math.cos(theta1 - tangent_angle) * Math.sin(tangent_angle) + friend2.speed * Math.sin(theta1 - tangent_angle) * Math.cos(tangent_angle + Math::PI / 2)
-		#				friend1.set_velocity(v1x, v1y)
-		#				friend2.set_velocity(v2x, v2y)
-		#			end
-		#		end
-		#	end
-		#end
+
 		@hearts.dup.each do |heart|
 			@hearts.delete heart unless heart.onscreen?
 		end
