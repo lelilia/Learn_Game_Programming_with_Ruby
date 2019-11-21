@@ -23,6 +23,7 @@ class MadeMyDay < Gosu::Window
 
 	def initialize_game
 		@scene = :game
+		@level = :level1
 		@font = Gosu::Font.new(24)
 		@player = Player.new(self)
 		@friends = []
@@ -35,6 +36,9 @@ class MadeMyDay < Gosu::Window
 	def initialize_end
 		@message = "Oh no! #{@friends_left} friends of you left while still being sad."
 		@message2 = "But you cheered #{@happyfriends_left} friends up! So great!"
+		if @happyfriends_left == 0
+			@message2 = "Oh no you did not cheer any of your friends up... are you ok?"
+		end
 		@bottom_message = "Press P to play again, or Q to quit."
 		@message_font = Gosu::Font.new(28)
 		@credits = []
@@ -168,6 +172,9 @@ class MadeMyDay < Gosu::Window
 	end
 
 	def button_down_start(id)
+		if id == Gosu::KbEscape
+			close
+		end
 		initialize_game
 	end
 
@@ -183,7 +190,7 @@ class MadeMyDay < Gosu::Window
 	def button_down_end(id)
 		if id == Gosu::KbP 
 			initialize_game
-		elsif id == Gosu::KbQ
+		elsif id == Gosu::KbQ or id == Gosu::KbEscape
 			close
 		end
 	end
