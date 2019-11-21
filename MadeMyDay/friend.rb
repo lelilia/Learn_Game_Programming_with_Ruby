@@ -1,6 +1,6 @@
 class Friend
 	SPEED = 4
-	attr_reader :x, :y, :radius, :angle, :SPEED
+	attr_reader :x, :y, :radius, :angle, :speed
 
 	def initialize(window)
 		@radius = 32
@@ -11,6 +11,7 @@ class Friend
 		@v_y = Gosu::offset_y(@angle,SPEED)
 		@image = Gosu::Image.new('images/Phantom_Open_Emoji_1f614.png')
 		@window = window
+		@speed =SPEED
 	end
 
 	def move
@@ -35,8 +36,9 @@ class Friend
 		@image.draw(@x - @radius, @y - @radius, 1)
 	end
 
-	def set_velocity (x, y)
-		@v_x = x
-		@v_y = y
+	def set_velocity (v_x, v_y)
+		@v_x = v_x
+		@v_y = v_y
+		@speed = (@v_x**2 + @v_y**2)**0.5
 	end
 end
