@@ -11,6 +11,7 @@ class MadeMyDay < Gosu::Window
 	HEIGHT = 600
 	FRIEND_FREQUENCY = 0.01
 	MAX_FRIENDS = 1
+	SPEED = 4
 
 	def initialize
 		super(WIDTH, HEIGHT)
@@ -28,7 +29,7 @@ class MadeMyDay < Gosu::Window
 		@player = Player.new(self)
 		@friends = []
 		@hearts = []
-		@happyfriends = []
+		# @happyfriends = []
 		@happyfriends_left = 0
 		@friends_left = 0
 	end
@@ -72,9 +73,9 @@ class MadeMyDay < Gosu::Window
 		@friends.each do |friend|
 			friend.move
 		end
-		@happyfriends.each do |happyfriend|
-			happyfriend.move
-		end
+		# @happyfriends.each do |happyfriend|
+			# happyfriend.move
+		# end
 		@hearts.each do |heart|
 			heart.move
 		end
@@ -84,7 +85,27 @@ class MadeMyDay < Gosu::Window
 				if distance < friend.radius + heart.radius
 					@friends.delete friend
 					@hearts.delete heart
-					@happyfriends.push HappyFriend.new(self, friend.x, friend.y)
+					@friends.push HappyFriend.new(self, friend.x, friend.y)
+				end
+			end
+		end
+		@friends.dup.each do |friend1|
+			@friends.dup.each do |friend2|
+				if not (friend1.x == friend2.x and friend1.y == friend2.y)
+					distance = Gosu::distance(friend1.x, friend1.y, friend2.x, friend2.y)
+					if distance < friend1.radius + friend2.radius
+						tangent_angle = (Gosu::angle(friend1.x, friend1.y, friend2.x, friend2.y) + 90) * Math::PI / 180
+						theta1 = friend1.angle * Math::PI / 180
+						theta2 = friend2.angle * Math::PI / 180
+						v1x = SPEED * Math.cos(theta2 - tangent_angle) * Math.cos(tangent_angle) + SPEED * Math.sin(theta2 - tangent_angle) * Math.cos(tangent_angle + Math::PI / 2)
+						v1y = SPEED * Math.cos(theta2 - tangent_angle) * Math.sin(tangent_angle) + SPEED * Math.sin(theta2 - tangent_angle) * Math.cos(tangent_angle + Math::PI / 2)
+
+						v2x = SPEED * Math.cos(theta1 - tangent_angle) * Math.cos(tangent_angle) + SPEED * Math.sin(theta1 - tangent_angle) * Math.cos(tangent_angle + Math::PI / 2)
+						v2y = SPEED * Math.cos(theta1 - tangent_angle) * Math.sin(tangent_angle) + SPEED * Math.sin(theta1 - tangent_angle) * Math.cos(tangent_angle + Math::PI / 2)
+
+						friend1.set_velocity(v1x, v1y)
+						friend2.set_velocity(v2x, v2y)
+					end
 				end
 			end
 		end
@@ -95,15 +116,19 @@ class MadeMyDay < Gosu::Window
 			 if friend.y < - 4 * friend.radius
 				@friends.delete friend
 				@friends_left += 1
+			elsif friend.y > HEIGHT + friend.radius 
+				@friends.delete friend 
+				@happyfriends_left += 1
+				
 			end
 		end
 		initialize_end if @friends_left > MAX_FRIENDS
-		@happyfriends.dup.each do |happyfriend|
-			if happyfriend.y > HEIGHT + happyfriend.radius 
-				@happyfriends.delete happyfriend 
-				@happyfriends_left += 1
-			end
-		end
+		# @happyfriends.dup.each do |happyfriend|
+			# if happyfriend.y > HEIGHT + happyfriend.radius 
+				# @happyfriends.delete happyfriend 
+				# @happyfriends_left += 1
+			# end
+		# end
 	end
 
 	def update_end
@@ -134,6 +159,7 @@ class MadeMyDay < Gosu::Window
 	
 	def draw_game	
 		#@font.draw_text("#{@friends_left}", 100, 100, 2)
+		@font.draw_text("#{@friends[0].what_is_the_angle()}", 100, 100, 2) unless @friends.length == 0
 		@player.draw
 		@friends.each do |friend|
 			friend.draw
@@ -141,9 +167,9 @@ class MadeMyDay < Gosu::Window
 		@hearts.each do |heart|
 			heart.draw
 		end
-		@happyfriends.each do |happyfriend|
-			happyfriend.draw
-		end
+		# @happyfriends.each do |happyfriend|
+			# happyfriend.draw
+		# end
 	end
 
 	def draw_end
