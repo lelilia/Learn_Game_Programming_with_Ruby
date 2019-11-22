@@ -14,7 +14,7 @@ class Game
 		@font_small = Gosu::Font.new(SMALL_FONT)
 		@already_won = false
 		@squares = []
-		@@values = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]
+		@@values = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765]
 		(0..NUMBER_OF_SQUARES - 1).each do |row|
 			(0..NUMBER_OF_SQUARES - 1).each do |col|
 				index = row * NUMBER_OF_SQUARES + col
@@ -67,7 +67,7 @@ class Game
 		random_new_value = rand
 		if random_new_value > 0.99
 			random_new_value = 3
-		elsif random_new_value > 0.50
+		elsif random_new_value > 0.80
 			random_new_value = 2
 		else
 			random_new_value = 1
@@ -85,7 +85,10 @@ class Game
 			end
 			(0..NUMBER_OF_SQUARES - 1).each do |row|
 				(0..NUMBER_OF_SQUARES - 2).each do |col|
-					if array_of_values[row * NUMBER_OF_SQUARES + col] == array_of_values[row * NUMBER_OF_SQUARES + col + 1] or array_of_values[col * NUMBER_OF_SQUARES + row] == array_of_values[(col+1)*NUMBER_OF_SQUARES + row]
+					val1_index = @@values.index(array_of_values[row * NUMBER_OF_SQUARES + col])
+					val2_index = @@values.index(array_of_values[row * NUMBER_OF_SQUARES + col + 1])
+					val3_index = @@values.index(array_of_values[(col + 1) * NUMBER_OF_SQUARES + row])
+					if val1_index == val2_index + 1 or val1_index == val2_index - 1 or val1_index == val3_index + 1 or val1_index == val3_index -1
 						return false
 					end
 				end

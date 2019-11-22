@@ -38,7 +38,7 @@ class Square
 
 			change = 0
 
-			if @val > 2048
+			if @val > 144
 				@color = Gosu::Color.argb(0xaaeb07ff)
 			else
 				@color = ("c"+@val.to_s).to_sym
