@@ -39,11 +39,12 @@ class Square
 			change = 0
 
 			if @val > 144
-				@color = Gosu::Color.argb(0xaaeb07ff)
+				c = Gosu::Color.argb(0xaaeb07ff)
 			else
 				@color = ("c"+@val.to_s).to_sym
+				c = @@colors[@color]
 			end
-			c = @@colors[@color]
+			
 			
 			if @highlight == :new
 				@new_frame_count ||= 1

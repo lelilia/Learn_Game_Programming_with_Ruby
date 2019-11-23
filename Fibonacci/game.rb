@@ -85,10 +85,15 @@ class Game
 			end
 			(0..NUMBER_OF_SQUARES - 1).each do |row|
 				(0..NUMBER_OF_SQUARES - 2).each do |col|
-					val1_index = @@values.index(array_of_values[row * NUMBER_OF_SQUARES + col])
-					val2_index = @@values.index(array_of_values[row * NUMBER_OF_SQUARES + col + 1])
-					val3_index = @@values.index(array_of_values[(col + 1) * NUMBER_OF_SQUARES + row])
-					if val1_index == val2_index + 1 or val1_index == val2_index - 1 or val1_index == val3_index + 1 or val1_index == val3_index -1
+					val1 = array_of_values[row * NUMBER_OF_SQUARES + col]
+					val2 = array_of_values[row * NUMBER_OF_SQUARES + col + 1]
+					val3 = array_of_values[(col + 1) * NUMBER_OF_SQUARES + row]
+					val1_index = @@values.index(val1)
+					val2_index = @@values.index(val2)
+					val3_index = @@values.index(val3)
+					if val1_index == val2_index + 1 or val1_index == val2_index - 1 or val1_index == val3_index + 1 or val1_index == val3_index -1 
+						return false
+					elsif val1 == 1 and (val2 == 1 or val3 == 1)
 						return false
 					end
 				end
