@@ -9,7 +9,7 @@ class Game2048 < Gosu::Window
 
 	def initialize
 		super(WINDOW_SIZE, WINDOW_SIZE)
-		self.caption = '2048'
+		self.caption = 'Finobannci'
 		@game = Game.new(self)
 	end
 
