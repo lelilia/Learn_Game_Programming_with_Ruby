@@ -14,7 +14,7 @@ class Game
 		@font_small = Gosu::Font.new(SMALL_FONT)
 		@already_won = false
 		@squares = []
-		@@values = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765]
+		@@values = [1, 2, 3, 5, 8, 13]
 		(0..NUMBER_OF_SQUARES - 1).each do |row|
 			(0..NUMBER_OF_SQUARES - 1).each do |col|
 				index = row * NUMBER_OF_SQUARES + col
@@ -187,31 +187,20 @@ class Game
     					merges[i] = :merge
     					break
     				elsif @@values.index(arr[j]) != @@values.index(arr[i]) + 1 and @@values.index(arr[j]) != @@values.index(arr[i]) - 1 and arr[j] != 0
-      				#if arr[j]!= arr[i] and arr[j] != 0
         				break
       				elsif @@values.index(arr[j]) == @@values.index(arr[i]) + 1 or @@values.index(arr[j]) == @@values.index(arr[i]) - 1 
       					arr[i] = arr[i] + arr[j]
+      					if arr[i] > @@values[-1]
+      						@@values.push arr[i]
+      					end
       					merges[i] = :merge
-      					if arr[i] == 144 and @already_won == false
+      					if arr[i] == 2584 and @already_won == false
       						@win = true
       						@already_won = true
       					end
       					arr[j] = 0
       					break
       				end
-
-
-      				#elsif arr[j] == arr[i]
-        			#	arr[i] *= 2
-        			#	merges[i] = :merge
-        				## check for win state
-        			#	if arr[i] == 2048 and @already_won == false
-        			#		@win = true
-        			#		@already_won = true
-        			#	end
-        			#	arr[j] = 0
-        			#	break
-      				#end
     			end
   			end
 		end
