@@ -22,6 +22,10 @@ https://commons.wikimedia.org/w/index.php?curid=37416812
 https://commons.wikimedia.org/w/index.php?curid=37416812
 
 
-By Google - https://github.com/googlei18n/noto-emoji/blob/f2a4f72/svg/emoji_u1f496.svg, Apache License 2.0, https://commons.wikimedia.org/w/index.php?curid=34844411
-
-By Google - https://github.com/googlei18n/noto-emoji/blob/f2a4f72/svg/emoji_u1f497.svg, Apache License 2.0, https://commons.wikimedia.org/w/index.php?curid=34845584
+By Google - 
+https://github.com/googlei18n/noto-emoji/blob/f2a4f72/
+svg/emoji_u1f496.svg, 
+https://github.com/googlei18n/noto-emoji/blob/f2a4f72/
+svg/emoji_u1f497.svg, 
+Apache License 2.0, 
+https://commons.wikimedia.org/w/index.php?curid=34845584
