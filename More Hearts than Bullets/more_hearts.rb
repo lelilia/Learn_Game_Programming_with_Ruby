@@ -1,6 +1,6 @@
 require 'gosu'
 require_relative 'player'
-#require_relative 'friend'
+require_relative 'friend'
 require_relative 'credit'
 require_relative 'heart'
 
@@ -29,8 +29,8 @@ class MoreHearts < Gosu::Window
 
 	def initialize_end
 		@scene = :end
-		@message = "Oh no! #{@friends_have_left[sad]} friends of you left while still being sad."
-		@message2 = "But you cheered #{@friends_have_left[happy]} friends up! So great!"
+		@message = "Oh no! #{@friends_have_left[:sad]} friends of you left while still being sad."
+		@message2 = "But you cheered #{@friends_have_left[:happy]} friends up! So great!"
 		@bottom_message = "Press P to play again, or Q to quit."
 		@message_font = Gosu::Font.new(28)
 		@credits = []
@@ -57,9 +57,42 @@ class MoreHearts < Gosu::Window
 		@player.backwards if button_down?(Gosu::KbDown)
 		@player.move
 
+		if rand < FRIEND_FREQUENCY
+			@friends.push Friend.new(self, (rand(WIDTH) - 64) + 32, 0, rand(140) + 110, 4, :sad)
+		end
+
 		@hearts.each do |heart|
 			heart.move
 		end
+		@friends.each do |friend|
+			friend.move
+		end
+		@friends.dup.each do |friend|
+			@hearts.dup.each do |heart|
+				distance = Gosu::distance(friend.x, friend.y, heart.x, heart.y)
+				if distance < friend.radius + heart.radius
+					friend.set_mood(:happy)
+					@hearts.delete heart
+				end
+			end
+		end
+		@hearts.dup.each do |heart|
+			@hearts.delete heart unless heart.onscreen?
+		end
+		@friends.dup.each do |friend|
+			if friend.mood == :sad
+				if friend.y < -friend.radius
+					@friends.delete friend
+					@friends_have_left[:sad] += 1
+				end
+			elsif friend.mood == :happy
+				if friend.y > HEIGHT + friend.radius
+					@friends.delete friend
+					@friends_have_left[:happy] += 1
+				end
+			end
+		end
+		initialize_end if @friends_have_left[:sad] > MAX_FRIENDS
 	end
 
 	def update_end
@@ -92,6 +125,9 @@ class MoreHearts < Gosu::Window
 		@player.draw
 		@hearts.each do |heart|
 			heart.draw
+		end
+		@friends.each do |friend|
+			friend.draw
 		end
 	end
 
