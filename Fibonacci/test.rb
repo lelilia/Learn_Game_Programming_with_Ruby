@@ -33,11 +33,15 @@ class Game2048 < Gosu::Window
 	def draw
 		@squares.each do |s|
 			s.draw
-		end
-	
-				
-				
+		end		
+	end
+	def button_down(id)
+		if id == Gosu::KbR
+			@game = Game.new(self)
+		elsif id == Gosu::KbEscape
+			close
 			
+		end
 	end
 end
 

@@ -7,21 +7,10 @@ class Square
 	attr_reader :row, :col, :val
 
 	def initialize(window, col, row, val)
-		@@colors ||= {c1: Gosu::Color.argb(0xaac065eb),
-					  c2: Gosu::Color.argb(0xaaae2deb),
-					  c3: Gosu::Color.argb(0xaacb2deb),
-					  c5: Gosu::Color.argb(0xaaeb2deb),
-					  c8: Gosu::Color.argb(0xaac41ac4),
-					 c13: Gosu::Color.argb(0xaadb35b7),
-					 c21: Gosu::Color.argb(0xaad10fa7),
-					 c34: Gosu::Color.argb(0xaad64f9e),
-					 c55: Gosu::Color.argb(0xaae62294),
-				     c89: Gosu::Color.argb(0xaae62263),
-				    c144: Gosu::Color.argb(0xaaeb0753)}
-		@@color_array_original = [0xaac065eb, 0xaaae2deb, 0xaacb2deb, 0xaac41ac4, 0xaadb35b7, 0xaad10fa7, 0xaad64f9e, 0xaae62263, 0xaae62294, 0xaaeb0753,
-								  0xaaeb2d9b, 0xaaeb2daf, 0xaaeb2dc3, 0xaaeb2dd7, 0xaaeb2deb, 0xaad72deb, 0xaac32deb, 0xaaaf2deb, 0xaa9b2deb, 0xaac165eb,
-								  0xaaae2deb, 0xaacb2deb, 0xaac41ac4, 0xaadb35b7, 0xaad10fa7, 0xaad64f9e, 0xaae62294, 0xaae62263, 0xaaeb0753, 0xaa4b0082, 
-								  0xaa800080, 0xaaff00ff, 0xaada70d6, 0xaaff1493, 0xaaff9b4]
+		@@color_array_original = [0xffc065eb, 0xffae2deb, 0xffcb2deb, 0xffc41ac4, 0xffdb35b7, 0xffd10fa7, 0xffd64f9e, 0xffe62263, 0xffe62294, 0xffeb0753,
+								  0xffeb2d9b, 0xffeb2daf, 0xffeb2dc3, 0xffeb2dd7, 0xffeb2deb, 0xffd72deb, 0xffc32deb, 0xffaf2deb, 0xff9b2deb, 0xffc165eb,
+								  0xffae2deb, 0xffcb2deb, 0xffc41ac4, 0xffdb35b7, 0xffd10fa7, 0xffd64f9e, 0xffe62294, 0xffe62263, 0xffeb0753, 0xff4b0082, 
+								  0xff800080, 0xffff00ff, 0xffda70d6, 0xffff1493, 0xffff69b4]
 		@@color_array = @@color_array_original.shuffle
 		@@color_value = {}
 		@@window ||= window
@@ -37,9 +26,9 @@ class Square
 			@@color_array = @@color_array_original.shuffle
 		end
 		if not @@color_value.keys.include? val
-			@@color_value[val] = @@color_array.pop
+			@@color_value[val] = Gosu::Color.argb(@@color_array.pop)
 		end
-		return Gosu::Color.argb(@@color_value[val])
+		return @@color_value[val]
 	end
 
 	def draw
@@ -75,10 +64,6 @@ class Square
 					@merge_frame_count = nil
 				end
 			end
-
-
-
-			
 
 			left -= change
 			right += change
