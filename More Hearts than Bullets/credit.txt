@@ -1,0 +1,31 @@
+Made My Day
+by LELI
+
+Inspired by a Tutorial from 
+Learn Game Programming with Ruby
+by Mark Sobkowicz
+
+- - - Images - - -
+
+Game Art from Wikimedia Commons
+
+By Phantom Open Emoji maintainers and contributors
+Licensed under Creative Commons: By Attribution 3.0
+https://commons.wikimedia.org/w/index.php?curid=37417109
+https://commons.wikimedia.org/w/index.php?curid=37417106
+https://commons.wikimedia.org/w/index.php?curid=37416813
+https://commons.wikimedia.org/w/index.php?curid=37416973
+https://commons.wikimedia.org/w/index.php?curid=37416438
+https://commons.wikimedia.org/w/index.php?curid=37416896
+https://commons.wikimedia.org/w/index.php?curid=37417196
+https://commons.wikimedia.org/w/index.php?curid=37416812
+https://commons.wikimedia.org/w/index.php?curid=37416812
+
+
+By Google - 
+https://github.com/googlei18n/noto-emoji/blob/f2a4f72/
+svg/emoji_u1f496.svg, 
+https://github.com/googlei18n/noto-emoji/blob/f2a4f72/
+svg/emoji_u1f497.svg, 
+Apache License 2.0, 
+https://commons.wikimedia.org/w/index.php?curid=34845584
