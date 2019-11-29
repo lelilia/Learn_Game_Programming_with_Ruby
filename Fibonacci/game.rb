@@ -25,10 +25,6 @@ class Game
 		fill_random_empty_square
 	end
 
-	def get_values
-		@@values
-	end
-
 	def draw
 		@squares.each do |square|
 			square.draw
