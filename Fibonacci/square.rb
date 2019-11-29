@@ -7,23 +7,28 @@ class Square
 	attr_reader :row, :col, :val
 
 	def initialize(window, col, row, val)
-		@@colors ||= {c1: Gosu::Color.argb(0xaac065eb),
-					  c2: Gosu::Color.argb(0xaaae2deb),
-					  c3: Gosu::Color.argb(0xaacb2deb),
-					  c5: Gosu::Color.argb(0xaaeb2deb),
-					  c8: Gosu::Color.argb(0xaac41ac4),
-					 c13: Gosu::Color.argb(0xaadb35b7),
-					 c21: Gosu::Color.argb(0xaad10fa7),
-					 c34: Gosu::Color.argb(0xaad64f9e),
-					 c55: Gosu::Color.argb(0xaae62294),
-				     c89: Gosu::Color.argb(0xaae62263),
-				    c144: Gosu::Color.argb(0xaaeb0753)}
+		@@color_array_original = [0xffc065eb, 0xffae2deb, 0xffcb2deb, 0xffc41ac4, 0xffdb35b7, 0xffd10fa7, 0xffd64f9e, 0xffe62263, 0xffe62294, 0xffeb0753,
+								  0xffeb2d9b, 0xffeb2daf, 0xffeb2dc3, 0xffeb2dd7, 0xffeb2deb, 0xffd72deb, 0xffc32deb, 0xffaf2deb, 0xff9b2deb, 0xffc165eb,
+								  0xffae2deb, 0xffcb2deb, 0xffc41ac4, 0xffdb35b7, 0xffd10fa7, 0xffd64f9e, 0xffe62294, 0xffe62263, 0xffeb0753, 0xff4b0082, 
+								  0xff800080, 0xffff00ff, 0xffda70d6, 0xffff1493, 0xffff69b4]
+		@@color_array = @@color_array_original.shuffle
+		@@color_value = {}
 		@@window ||= window
 		@@font ||= Gosu::Font.new(FONT_SIZE)
 		@row = row
 		@col = col 
 		@val = val
 		@highlight = :default
+	end
+
+	def get_color(val)
+		if @@color_array == []
+			@@color_array = @@color_array_original.shuffle
+		end
+		if not @@color_value.keys.include? val
+			@@color_value[val] = Gosu::Color.argb(@@color_array.pop)
+		end
+		return @@color_value[val]
 	end
 
 	def draw
@@ -38,13 +43,7 @@ class Square
 
 			change = 0
 
-			if @val > 144
-				c = Gosu::Color.argb(0xaaeb07ff)
-			else
-				@color = ("c"+@val.to_s).to_sym
-				c = @@colors[@color]
-			end
-			
+			c = get_color(@val)
 			
 			if @highlight == :new
 				@new_frame_count ||= 1
@@ -65,10 +64,6 @@ class Square
 					@merge_frame_count = nil
 				end
 			end
-
-
-
-			
 
 			left -= change
 			right += change

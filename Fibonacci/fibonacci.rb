@@ -1,7 +1,7 @@
 require 'gosu'
 require_relative 'game'
 
-class Game2048 < Gosu::Window
+class Fibonacci < Gosu::Window
 	SQUARE_SIZE = 100
 	SQUARE_BORDER = 4
 	NUMBER_OF_SQUARES = 4
@@ -9,7 +9,7 @@ class Game2048 < Gosu::Window
 
 	def initialize
 		super(WINDOW_SIZE, WINDOW_SIZE)
-		self.caption = 'Finobannci'
+		self.caption = 'Finobancci'
 		@game = Game.new(self)
 	end
 
@@ -46,5 +46,5 @@ class Game2048 < Gosu::Window
 	end
 end
 
-window = Game2048.new
+window = Fibonacci.new
 window.show
