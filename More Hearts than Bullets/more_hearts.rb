@@ -56,17 +56,19 @@ class MoreHearts < Gosu::Window
 		@player.accelerate if button_down?(Gosu::KbUp)
 		@player.backwards if button_down?(Gosu::KbDown)
 		@player.move
-
+		# create new friends
 		if rand < FRIEND_FREQUENCY
 			@friends.push Friend.new(self, (rand(WIDTH) - 64) + 32, 0, rand(140) + 110, 4, :sad)
 		end
-
+		# move the hearts
 		@hearts.each do |heart|
 			heart.move
 		end
+		# move the friends
 		@friends.each do |friend|
 			friend.move
 		end
+		# check for friends receiving hearts
 		@friends.dup.each do |friend|
 			@hearts.dup.each do |heart|
 				distance = Gosu::distance(friend.x, friend.y, heart.x, heart.y)
@@ -76,22 +78,37 @@ class MoreHearts < Gosu::Window
 				end
 			end
 		end
+		# remove hearts that are no longer on screen
 		@hearts.dup.each do |heart|
 			@hearts.delete heart unless heart.onscreen?
 		end
+		# remove friends that are no longer on screen
 		@friends.dup.each do |friend|
-			if friend.mood == :sad
-				if friend.y < -friend.radius
-					@friends.delete friend
-					@friends_have_left[:sad] += 1
-				end
-			elsif friend.mood == :happy
-				if friend.y > HEIGHT + friend.radius
-					@friends.delete friend
-					@friends_have_left[:happy] += 1
+			if not friend.onscreen?
+				@friends.delete friend
+				@friends_have_left[friend.mood] += 1
+			end
+		end
+		# check for collisions of friends
+		@friends.dup.each do |friend1|
+			@friends.dup.each do |friend2|
+				distance = Gosu::distance(friend1.x, friend1.y, friend2.x, friend2.y)
+				if distance < friend1.radius + friend2.radius and friend1 != friend2
+					phi = (Gosu::angle(friend1.x, friend1.y, friend2.x, friend2.y) + 90)
+					x1  = friend1.x + 2 * friend1.radius * Gosu::offset_x(phi - 90, 1)
+					y1  = friend1.y + 2 * friend1.radius * Gosu::offset_y(phi - 90, 1)
+					x2  = friend2.x + 2 * friend2.radius * Gosu::offset_x(phi - 90, 1)
+					y2  = friend2.y + 2 * friend2.radius * Gosu::offset_y(phi - 90, 1)
+					v1x = friend1.speed * Gosu::offset_y(friend2.angle - phi, 1) * Gosu::offset_y(phi, 1) + friend1.speed * Gosu::offset_x(friend2.angle - phi, 1) * Gosu::offset_y(phi + 90, 1)
+					v1y = friend1.speed * Gosu::offset_y(friend2.angle - phi, 1) * Gosu::offset_x(phi, 1) + friend1.speed * Gosu::offset_x(friend2.angle - phi, 1) * Gosu::offset_y(phi + 90, 1)
+					v2x = friend2.speed * Gosu::offset_y(friend1.angle - phi, 1) * Gosu::offset_y(phi, 1) + friend2.speed * Gosu::offset_x(friend1.angle - phi, 1) * Gosu::offset_y(phi + 90, 1)
+					v2y = friend2.speed * Gosu::offset_y(friend1.angle - phi, 1) * Gosu::offset_x(phi, 1) + friend2.speed * Gosu::offset_x(friend1.angle - phi, 1) * Gosu::offset_y(phi + 90, 1)
+					friend1.set_velocity(x1, y1, v1x, v1y)
+					friend2.set_velocity(x2, y2, v2x, v2y)
 				end
 			end
 		end
+		# initialize the end scene if the maximum number of friends left sad
 		initialize_end if @friends_have_left[:sad] > MAX_FRIENDS
 	end
 
@@ -172,7 +189,7 @@ class MoreHearts < Gosu::Window
 	end
 
 	def button_down_end(id)
-		if id == Gosu::KbUp
+		if id == Gosu::KbP
 			initialize_game
 		elsif id == Gosu::KbQ or id == Gosu::KbEscape
 			close

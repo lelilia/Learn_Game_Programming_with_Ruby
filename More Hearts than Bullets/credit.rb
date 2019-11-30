@@ -14,7 +14,7 @@ class Credit
 	end
 
 	def draw
-		@font.draw_text(@text, @x, @y, 1, 1, 1, Gosu::Color::WHITE)
+		@font.draw_text(@text, @x, @y, 1, 1, 1, Gosu::Color.argb(0xffeb2dc3))
 	end
 
 	def reset

@@ -47,7 +47,9 @@ class Friend
 		@angle = Gosu::angle(0,0, @velocity_x, @velocity_y)
 	end
 
-	def set_velocity(v_x, v_y)
+	def set_velocity(x, y, v_x, v_y)
+		@x = x
+		@y = y
 		@velocity_x = v_x
 		@velocity_y = v_y
 		@angle = Gosu::angle(0,0,@velocity_x, @velocity_y)
@@ -65,4 +67,13 @@ class Friend
 			@image_happy.draw(@x - @radius, @y - @radius, 1)
 		end
 	end
+
+	def onscreen?
+		right  = @window.width + @radius
+		left   = - @radius
+		top    = - @radius
+		bottom = @window.height + @radius
+		@x > left and @x < right and @y > top and @y < bottom
+	end
+
 end
