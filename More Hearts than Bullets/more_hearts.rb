@@ -28,9 +28,13 @@ class MoreHearts < Gosu::Window
 	end
 
 	def initialize_end
+		happy_friends_onscreen = 0
+		@friends.each do |friend|
+			happy_friends_onscreen += 1 if friend.mood == :happy
+		end
 		@scene = :end
 		@message = "Oh no! #{@friends_have_left[:sad]} friends of you left while still being sad."
-		@message2 = "But you cheered #{@friends_have_left[:happy]} friends up! So great!"
+		@message2 = "But you cheered #{@friends_have_left[:happy]+happy_friends_onscreen} friends up! So great!"
 		@bottom_message = "Press P to play again, or Q to quit."
 		@message_font = Gosu::Font.new(28)
 		@credits = []
@@ -92,24 +96,47 @@ class MoreHearts < Gosu::Window
 		# check for collisions of friends
 		@friends.dup.each do |friend1|
 			@friends.dup.each do |friend2|
-				distance = Gosu::distance(friend1.x, friend1.y, friend2.x, friend2.y)
-				if distance < friend1.radius + friend2.radius and friend1 != friend2
-					phi = (Gosu::angle(friend1.x, friend1.y, friend2.x, friend2.y) + 90)
-					x1  = friend1.x - 0.1 * friend1.radius * Gosu::offset_x(phi - 90, 1)
-					y1  = friend1.y - 0.1 * friend1.radius * Gosu::offset_y(phi - 90, 1)
-					x2  = friend2.x + 0.1 * friend2.radius * Gosu::offset_x(phi - 90, 1)
-					y2  = friend2.y + 0.1 * friend2.radius * Gosu::offset_y(phi - 90, 1)
-					v1x = friend1.speed * Gosu::offset_y(friend2.angle - phi, 1) * Gosu::offset_y(phi, 1) + friend1.speed * Gosu::offset_x(friend2.angle - phi, 1) * Gosu::offset_y(phi + 90, 1)
-					v1y = friend1.speed * Gosu::offset_y(friend2.angle - phi, 1) * Gosu::offset_x(phi, 1) + friend1.speed * Gosu::offset_x(friend2.angle - phi, 1) * Gosu::offset_x(phi + 90, 1)
-					v2x = friend2.speed * Gosu::offset_y(friend1.angle - phi, 1) * Gosu::offset_y(phi, 1) + friend2.speed * Gosu::offset_x(friend1.angle - phi, 1) * Gosu::offset_y(phi + 90, 1)
-					v2y = friend2.speed * Gosu::offset_y(friend1.angle - phi, 1) * Gosu::offset_x(phi, 1) + friend2.speed * Gosu::offset_x(friend1.angle - phi, 1) * Gosu::offset_x(phi + 90, 1)
-					friend1.set_velocity(x1, y1, v1x, v1y)
-					friend2.set_velocity(x2, y2, v2x, v2y)
+				if friend1 != friend2
+					distance = Gosu::distance(friend1.x, friend1.y, friend2.x, friend2.y)
+					if distance < friend1.radius + friend2.radius and friend1.mood == :sad and friend2.mood == :sad
+						bounce(friend1, friend2, distance)
+					elsif distance < friend1.radius + friend2.radius and friend1.mood == :happy and friend2.mood == :sad
+						hug(friend1, friend2)
+					end
+
 				end
 			end
 		end
 		# initialize the end scene if the maximum number of friends left sad
 		initialize_end if @friends_have_left[:sad] > MAX_FRIENDS
+	end
+
+	def hug(friend1, friend2)
+		friend2.set_mood(:hug)
+		f1vx = friend1.vx 
+		f1vy = friend1.vy 
+		f2vx = friend2.vx
+		f2vy = friend2.vy 
+		friend1.set_velocity(friend1.x, friend1.y, 0, 0)
+		friend2.set_velocity(friend2.x, friend2.y, 0, 0)
+	end
+
+	def bounce(friend1, friend2, distance)
+		phi = (Gosu::angle(friend1.x, friend1.y, friend2.x, friend2.y) + 90)
+		x1  = friend1.x - Gosu::offset_x(phi - 90, friend1.radius + friend2.radius - distance)
+		y1  = friend1.y - Gosu::offset_y(phi - 90, friend1.radius + friend2.radius - distance)
+		x2  = friend2.x + Gosu::offset_x(phi - 90, friend1.radius + friend2.radius - distance)
+		y2  = friend2.y + Gosu::offset_y(phi - 90, friend1.radius + friend2.radius - distance)
+		# x1  = friend1.x - 0.1 * friend1.radius * Gosu::offset_x(phi - 90, 1)
+		# y1  = friend1.y - 0.1 * friend1.radius * Gosu::offset_y(phi - 90, 1)
+		# x2  = friend2.x + 0.1 * friend2.radius * Gosu::offset_x(phi - 90, 1)
+		# y2  = friend2.y + 0.1 * friend2.radius * Gosu::offset_y(phi - 90, 1)
+		v1x = friend1.speed * Gosu::offset_y(friend2.angle - phi, 1) * Gosu::offset_y(phi, 1) + friend1.speed * Gosu::offset_x(friend2.angle - phi, 1) * Gosu::offset_y(phi + 90, 1)
+		v1y = friend1.speed * Gosu::offset_y(friend2.angle - phi, 1) * Gosu::offset_x(phi, 1) + friend1.speed * Gosu::offset_x(friend2.angle - phi, 1) * Gosu::offset_x(phi + 90, 1)
+		v2x = friend2.speed * Gosu::offset_y(friend1.angle - phi, 1) * Gosu::offset_y(phi, 1) + friend2.speed * Gosu::offset_x(friend1.angle - phi, 1) * Gosu::offset_y(phi + 90, 1)
+		v2y = friend2.speed * Gosu::offset_y(friend1.angle - phi, 1) * Gosu::offset_x(phi, 1) + friend2.speed * Gosu::offset_x(friend1.angle - phi, 1) * Gosu::offset_x(phi + 90, 1)
+		friend1.set_velocity(x1, y1, v1x, v1y)
+		friend2.set_velocity(x2, y2, v2x, v2y)
 	end
 
 	def update_end
@@ -185,6 +212,9 @@ class MoreHearts < Gosu::Window
 		end
 		if id == Gosu::KbSpace
 			@hearts.push Heart.new(self, @player.x, @player.y, @player.angle)
+		end
+		if id == Gosu::KbR 
+			initialize_game
 		end
 	end
 
