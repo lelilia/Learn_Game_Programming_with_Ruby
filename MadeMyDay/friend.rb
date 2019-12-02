@@ -2,7 +2,7 @@ class Friend
 	SPEED = 4
 	SPEED_MIN = 2
 	SPEED_MAX = 8
-	attr_reader :x, :y, :radius, :angle, :speed
+	attr_reader :x, :y, :radius, :angle, :speed, :mood
 
 	def initialize(window)
 		@radius = 32

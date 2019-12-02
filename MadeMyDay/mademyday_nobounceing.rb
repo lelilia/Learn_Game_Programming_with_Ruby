@@ -1,4 +1,4 @@
-require 'gosu'
+0xffeb2dafrequire 'gosu'
 require_relative 'player'
 require_relative 'friend'
 require_relative 'happyfriend'
