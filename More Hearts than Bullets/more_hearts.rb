@@ -94,16 +94,15 @@ class MoreHearts < Gosu::Window
 			end
 		end
 		# check for collisions of friends
-		@friends.dup.each do |friend1|
-			@friends.dup.each do |friend2|
-				if friend1 != friend2
-					distance = Gosu::distance(friend1.x, friend1.y, friend2.x, friend2.y)
-					if distance < friend1.radius + friend2.radius and friend1.mood == :sad and friend2.mood == :sad
-						bounce(friend1, friend2, distance)
-					elsif distance < friend1.radius + friend2.radius and friend1.mood == :happy and friend2.mood == :sad
-						hug(friend1, friend2)
-					end
-
+		for i in (0 .. @friends.length - 2)
+			for j in (i+1 .. @friends.length - 1)
+				friend1 = @friends[i]
+				friend2 = @friends[j]
+				distance = Gosu::distance(friend1.x, friend1.y, friend2.x, friend2.y)
+				if distance < friend1.radius + friend2.radius and friend1.mood == :sad and friend2.mood == :sad
+					bounce(friend1, friend2, distance)
+				elsif distance < friend1.radius + friend2.radius and friend1.mood == :happy and friend2.mood == :sad
+					hug(friend1, friend2)
 				end
 			end
 		end
