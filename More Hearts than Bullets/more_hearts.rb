@@ -7,8 +7,9 @@ require_relative 'heart'
 class MoreHearts < Gosu::Window
 	WIDTH = 800
 	HEIGHT = 600
-	FRIEND_FREQUENCY = 0.01
-	MAX_FRIENDS = 10
+	#FRIEND_FREQUENCY = 0.01
+	FRIEND_FREQUENCY = 0.02
+	MAX_FRIENDS = 20
 	
 	def initialize
 		super(WIDTH, HEIGHT)
@@ -71,6 +72,9 @@ class MoreHearts < Gosu::Window
 		# move the friends
 		@friends.each do |friend|
 			friend.move
+			if friend.mood == :hug and friend.hug_timer == 0
+				friend.set_mood(:happy)
+			end
 		end
 		# check for friends receiving hearts
 		@friends.dup.each do |friend|
@@ -99,26 +103,43 @@ class MoreHearts < Gosu::Window
 				friend1 = @friends[i]
 				friend2 = @friends[j]
 				distance = Gosu::distance(friend1.x, friend1.y, friend2.x, friend2.y)
-				if distance < friend1.radius + friend2.radius and friend1.mood == :sad and friend2.mood == :sad
-					bounce(friend1, friend2, distance)
-				elsif distance < friend1.radius + friend2.radius and friend1.mood == :happy and friend2.mood == :sad
-					hug(friend1, friend2)
+				if friend1.mood == :sad
+					if distance < friend1.radius + friend2.radius and friend2.mood == :sad
+						bounce(friend1, friend2, distance)
+					elsif distance < friend1.radius and friend2.mood == :happy
+						friend1.set_mood(:hug)
+						friend1.set_hug_timer
+						friend2.set_mood(:hug)
+						friend2.set_hug_timer
+					end
+				elsif friend1.mood == :happy 
+					if distance < friend2.radius and friend2.mood == :sad
+						friend1.set_mood(:hug)
+						friend1.set_hug_timer
+						friend2.set_mood(:hug)
+						friend2.set_hug_timer
+					end
 				end
+				# if distance < friend1.radius + friend2.radius and friend1.mood == :sad and friend2.mood == :sad
+				# 	bounce(friend1, friend2, distance)
+				# elsif distance < friend1.radius + friend2.radius and friend1.mood == :happy and friend2.mood == :sad
+				# 	hug(friend1, friend2)
+				# end
 			end
 		end
 		# initialize the end scene if the maximum number of friends left sad
 		initialize_end if @friends_have_left[:sad] > MAX_FRIENDS
 	end
 
-	def hug(friend1, friend2)
-		friend2.set_mood(:hug)
-		f1vx = friend1.vx 
-		f1vy = friend1.vy 
-		f2vx = friend2.vx
-		f2vy = friend2.vy 
-		friend1.set_velocity(friend1.x, friend1.y, 0, 0)
-		friend2.set_velocity(friend2.x, friend2.y, 0, 0)
-	end
+	# def hug(friend1, friend2)
+	# 	friend2.set_mood(:hug)
+	# 	f1vx = friend1.vx 
+	# 	f1vy = friend1.vy 
+	# 	f2vx = friend2.vx
+	# 	f2vy = friend2.vy 
+	# 	friend1.set_velocity(friend1.x, friend1.y, 0, 0)
+	# 	friend2.set_velocity(friend2.x, friend2.y, 0, 0)
+	# end
 
 	def bounce(friend1, friend2, distance)
 		phi = (Gosu::angle(friend1.x, friend1.y, friend2.x, friend2.y) + 90)
@@ -215,14 +236,23 @@ class MoreHearts < Gosu::Window
 		if id == Gosu::KbR 
 			initialize_game
 		end
+		if id == Gosu::KbN
+			initialize
+		end
+		if id == Gosu::KbC 
+			initialize_end
+		end
 	end
 
 	def button_down_end(id)
 		if id == Gosu::KbP
 			initialize_game
+		elsif id == Gosu::KbN
+			initialize
 		elsif id == Gosu::KbQ or id == Gosu::KbEscape
 			close
 		end
+
 	end
 end
 

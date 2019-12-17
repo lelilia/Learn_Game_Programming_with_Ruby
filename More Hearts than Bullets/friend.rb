@@ -64,6 +64,10 @@ class Friend
 		@mood = mood
 	end
 
+	def set_hug_timer
+		@hug_timer = 60 unless @hug_timer != 0
+	end
+
 	def draw
 		case @mood
 		when :sad

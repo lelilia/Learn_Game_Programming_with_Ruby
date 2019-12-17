@@ -9,7 +9,7 @@ class Fibonacci < Gosu::Window
 
 	def initialize
 		super(WINDOW_SIZE, WINDOW_SIZE)
-		self.caption = 'Finobancci'
+		self.caption = 'Fibonacci'
 		@game = Game.new(self)
 	end
 
